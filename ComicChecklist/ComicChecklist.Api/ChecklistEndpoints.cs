@@ -126,11 +126,15 @@ internal static class ChecklistEndpoints
                 {
                     return Results.BadRequest("Issue list is invalid: Issues count mismatch.");
                 }
+
+                await repository.SaveChangesAsync();
+
+                return Results.Ok();
             }
-
-            await repository.SaveChangesAsync();
-
-            return Results.Ok();
+            else
+            {
+                return Results.NotFound();
+            }            
         })
         .WithName("UpdateChecklist")
         .WithDisplayName("Update Checklist")
