@@ -1,12 +1,13 @@
 ﻿using ComicChecklist.Api.Models;
 using ComicChecklist.Data.Repositories;
 using ComicChecklist.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 internal static class ChecklistEndpoints
 {
     internal static void ConfigureEndpoints(WebApplication app)
     {
-        app.MapPost("/checklist", async (IChecklistRepository repository, CreateChecklist payload) =>
+        app.MapPost("/checklist", async (IChecklistRepository repository, CreateChecklistDto payload) =>
         {
             if (string.IsNullOrEmpty(payload.Name))
             {
@@ -18,14 +19,29 @@ internal static class ChecklistEndpoints
                 Name = payload.Name
             };
 
+            if (payload.Issues != null && payload.Issues.Any())
+            {
+                var issues = payload.Issues.Select((item, index) => new Issue { Order = index, Title = item.Title });
+
+                foreach (var issue in issues)
+                {
+                    checklist.Issues.Add(issue);
+                }
+            }
+
             repository.Add(checklist);
+
             await repository.SaveChangesAsync();
 
-            return Results.Created($"/checklist/{checklist.Id}", checklist);
+            var checklistDto = new ChecklistDto(checklist.Id,
+                                                checklist.Name,
+                                                checklist.Issues.Select(x => new IssueDto(x.Id, x.Title)).ToArray());
+
+            return Results.Created($"/checklist/{checklistDto.Id}", checklistDto);
         })
         .WithName("CreateChecklist")
         .WithDisplayName("Create Checklist")
-        .Produces<Checklist>(StatusCodes.Status201Created, "app/json")
+        .Produces<ChecklistDto>(StatusCodes.Status201Created, "app/json")
         .Produces(StatusCodes.Status400BadRequest)
         .Produces(StatusCodes.Status500InternalServerError)
         .WithOpenApi();
@@ -39,11 +55,15 @@ internal static class ChecklistEndpoints
                 return Results.NotFound();
             }
 
-            return Results.Ok(checklist);
+            var checklistDto = new ChecklistDto(checklist.Id,
+                                                checklist.Name,
+                                                checklist.Issues.OrderBy(x => x.Order).Select(x => new IssueDto(x.Id, x.Title)).ToArray());
+
+            return Results.Ok(checklistDto);
         })
         .WithName("GetChecklist")
         .WithDisplayName("Get Checklist")
-        .Produces<Checklist>(StatusCodes.Status200OK, "app/json")
+        .Produces<ChecklistDto>(StatusCodes.Status200OK, "app/json")
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status500InternalServerError)
         .WithOpenApi();
@@ -55,13 +75,68 @@ internal static class ChecklistEndpoints
                 return Results.BadRequest("Index is < 0");
             }
 
-            var checklists = await repository.Search(name, index * 3, 3);
+            var checklists = await repository.Search(name, index * 10, 10);
 
-            return Results.Ok(checklists);
+            var checklistDtos = checklists.Select(checklist => new ChecklistDto(checklist.Id,
+                                                                                checklist.Name,
+                                                                                checklist.Issues.OrderBy(x => x.Order).Select(x => new IssueDto(x.Id, x.Title)).ToArray()));
+
+            return Results.Ok(checklistDtos);
         })
         .WithName("SearchChecklist")
         .WithDisplayName("Search Checklist")
-        .Produces<IEnumerable<Checklist>>(StatusCodes.Status200OK, "app/json")
+        .Produces<ChecklistDto[]>(StatusCodes.Status200OK, "app/json")
+        .Produces(StatusCodes.Status400BadRequest)
+        .Produces(StatusCodes.Status500InternalServerError)
+        .WithOpenApi();
+
+        app.MapPut("/checklist/{id}", async (IChecklistRepository repository, UpdateChecklistDto payload, int id) =>
+        {
+            if (string.IsNullOrEmpty(payload.Name))
+            {
+                return Results.BadRequest("Checklist name is null or empty.");
+            }
+
+            var checklist = await repository.GetAsync(id);
+
+            if (checklist != null)
+            {
+                if (payload.Issues.Count() == checklist.Issues.Count)
+                {
+                    if (payload.Issues.All(x => checklist.Issues.Any(y => y.Id == x.Id)))
+                    {
+                        checklist.Name = payload.Name;
+
+                        for (var i = 0; i < payload.Issues.Count(); i++)
+                        {
+                            var issueId = payload.Issues[i].Id;
+                            var issue = checklist.Issues.SingleOrDefault(x => x.Id == issueId);
+
+                            if (issue != null)
+                            {
+                                issue.Order = i;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        return Results.BadRequest("Issue list is invalid: IDs does not match.");
+                    }
+                }
+                else
+                {
+                    return Results.BadRequest("Issue list is invalid: Issues count mismatch.");
+                }
+            }
+
+            await repository.SaveChangesAsync();
+
+            return Results.Ok();
+        })
+        .WithName("UpdateChecklist")
+        .WithDisplayName("Update Checklist")
+        .Produces(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status400BadRequest)
         .Produces(StatusCodes.Status500InternalServerError)
         .WithOpenApi();

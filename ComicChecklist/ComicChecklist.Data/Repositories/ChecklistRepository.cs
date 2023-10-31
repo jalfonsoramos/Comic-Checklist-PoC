@@ -9,18 +9,23 @@ namespace ComicChecklist.Data.Repositories
         {
         }
 
+        public override async Task<Checklist> GetAsync(int id)
+        {
+            return await DbContext.Checklists.Include(x => x.Issues).SingleOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<IEnumerable<Checklist>> Search(string name, int skip, int take)
         {
             if (string.IsNullOrEmpty(name))
             {
-                return await DbContext.Checklists.OrderBy(x => x.Name)
+                return await DbContext.Checklists.Include(x => x.Issues).OrderBy(x => x.Name)
                                                  .Skip(skip)
                                                  .Take(take)
                                                  .ToListAsync();
             }
             else
             {
-                return await DbContext.Checklists.Where(x => x.Name.Contains(name))
+                return await DbContext.Checklists.Include(x => x.Issues).Where(x => x.Name.Contains(name))
                                                  .OrderBy(x => x.Name)
                                                  .Skip(skip)
                                                  .Take(take)

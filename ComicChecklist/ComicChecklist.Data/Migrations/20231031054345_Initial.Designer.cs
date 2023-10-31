@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComicChecklist.Data.Migrations
 {
     [DbContext(typeof(ComicChecklistDbContext))]
-    [Migration("20231030051508_Initial")]
+    [Migration("20231031054345_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -93,11 +93,13 @@ namespace ComicChecklist.Data.Migrations
 
             modelBuilder.Entity("ComicChecklist.Domain.Models.Issue", b =>
                 {
-                    b.HasOne("ComicChecklist.Domain.Models.Checklist", null)
+                    b.HasOne("ComicChecklist.Domain.Models.Checklist", "Checklist")
                         .WithMany("Issues")
                         .HasForeignKey("ChecklistId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Checklist");
                 });
 
             modelBuilder.Entity("ComicChecklist.Domain.Models.Checklist", b =>

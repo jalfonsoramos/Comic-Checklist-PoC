@@ -90,11 +90,13 @@ namespace ComicChecklist.Data.Migrations
 
             modelBuilder.Entity("ComicChecklist.Domain.Models.Issue", b =>
                 {
-                    b.HasOne("ComicChecklist.Domain.Models.Checklist", null)
+                    b.HasOne("ComicChecklist.Domain.Models.Checklist", "Checklist")
                         .WithMany("Issues")
                         .HasForeignKey("ChecklistId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Checklist");
                 });
 
             modelBuilder.Entity("ComicChecklist.Domain.Models.Checklist", b =>

@@ -7,5 +7,7 @@
         public string Title { get; set; }
 
         public int ChecklistId { get; set; }
+
+        public Checklist Checklist { get; set; }
     }
 }

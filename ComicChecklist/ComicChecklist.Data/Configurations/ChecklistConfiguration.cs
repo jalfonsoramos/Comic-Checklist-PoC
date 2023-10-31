@@ -1,6 +1,8 @@
 ﻿using ComicChecklist.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Diagnostics;
+using System.Reflection.Emit;
 
 namespace ComicChecklist.Data.Configurations
 {
@@ -13,7 +15,12 @@ namespace ComicChecklist.Data.Configurations
             builder.Property(x => x.Id).HasColumnName("ChecklistId");
             builder.Property(x => x.Name).HasMaxLength(255).IsRequired();
             builder.Property(x => x.Clocked).HasDefaultValue(false);
-            builder.Property(x => x.Createad).HasComputedColumnSql("GETUTCDATE()");                        
+            builder.Property(x => x.Createad).HasComputedColumnSql("GETUTCDATE()");
+
+            builder.HasMany(e => e.Issues)
+                    .WithOne(e => e.Checklist)
+                    .HasForeignKey(e => e.ChecklistId)
+                    .HasPrincipalKey(e => e.Id);
         }
     }
 }
