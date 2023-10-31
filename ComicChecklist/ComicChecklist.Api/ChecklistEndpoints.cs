@@ -1,7 +1,6 @@
 ﻿using ComicChecklist.Api.Models;
 using ComicChecklist.Data.Repositories;
 using ComicChecklist.Domain.Models;
-using Microsoft.EntityFrameworkCore;
 
 internal static class ChecklistEndpoints
 {
