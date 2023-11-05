@@ -2,7 +2,7 @@
 using ComicChecklist.Data.Repositories;
 using ComicChecklist.Domain.Models;
 
-internal static class ChecklistEndpoints
+internal static class AdminChecklistEndpoints
 {
     internal static void ConfigureEndpoints(WebApplication app)
     {
@@ -43,7 +43,8 @@ internal static class ChecklistEndpoints
         .Produces<ChecklistDto>(StatusCodes.Status201Created, "app/json")
         .Produces(StatusCodes.Status400BadRequest)
         .Produces(StatusCodes.Status500InternalServerError)
-        .WithOpenApi();
+        .WithOpenApi()
+        .RequireAuthorization("admin");
 
         app.MapGet("/checklist/{id}", async (IChecklistRepository repository, int id) =>
         {
@@ -65,7 +66,8 @@ internal static class ChecklistEndpoints
         .Produces<ChecklistDto>(StatusCodes.Status200OK, "app/json")
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status500InternalServerError)
-        .WithOpenApi();
+        .WithOpenApi()
+        .RequireAuthorization("admin");
 
         app.MapGet("/checklist", async (IChecklistRepository repository, string name, int index) =>
         {
@@ -87,7 +89,8 @@ internal static class ChecklistEndpoints
         .Produces<ChecklistDto[]>(StatusCodes.Status200OK, "app/json")
         .Produces(StatusCodes.Status400BadRequest)
         .Produces(StatusCodes.Status500InternalServerError)
-        .WithOpenApi();
+        .WithOpenApi()
+        .RequireAuthorization("admin");
 
         app.MapPut("/checklist/{id}", async (IChecklistRepository repository, UpdateChecklistDto payload, int id) =>
         {
@@ -142,6 +145,7 @@ internal static class ChecklistEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status400BadRequest)
         .Produces(StatusCodes.Status500InternalServerError)
-        .WithOpenApi();
+        .WithOpenApi()
+        .RequireAuthorization("admin");
     }
 }
