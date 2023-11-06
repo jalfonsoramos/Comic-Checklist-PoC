@@ -1,3 +1,4 @@
+using ComicChecklist.Application.Commands;
 using ComicChecklist.Domain.Interfaces.Repositories;
 using ComicChecklist.Infra.Data;
 using ComicChecklist.Infra.Data.Repositories;
@@ -18,7 +19,7 @@ builder.Services.AddDbContext<ComicChecklistDbContext>(options =>
 builder.Services.AddTransient<IChecklistRepository, ChecklistRepository>();
 
 // Add MediatR
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateChecklistCommand).Assembly));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -1,7 +1,7 @@
-﻿using ComicChecklist.Application.Queries;
+﻿using ComicChecklist.Application.Commands;
+using ComicChecklist.Application.Queries;
 using ComicChecklist.Domain.Dtos;
 using ComicChecklist.Domain.Interfaces.Repositories;
-using ComicChecklist.Domain.Models;
 using ComicChecklist.Presentation.Api.Models;
 using MediatR;
 
@@ -44,37 +44,26 @@ namespace ComicChecklist.Presentation.Api.Endpoints
             return group;
         }
 
-        public static async Task<IResult> CreateChecklist(IChecklistRepository repository, CreateChecklistRequest payload)
+        public static async Task<IResult> CreateChecklist(IMediator mediator, CreateChecklistRequest request)
         {
-            if (string.IsNullOrEmpty(payload.Name))
+            if (string.IsNullOrEmpty(request.Name))
             {
                 return Results.BadRequest("Checklist name is null or empty.");
             }
 
-            var checklist = new Checklist()
+            if (request.Issues == null || request.Issues.Count() == 0)
             {
-                Name = payload.Name
-            };
-
-            if (payload.Issues != null && payload.Issues.Any())
-            {
-                var issues = payload.Issues.Select((item, index) => new Issue { Order = index, Title = item.Title });
-
-                foreach (var issue in issues)
-                {
-                    checklist.Issues.Add(issue);
-                }
+                return Results.BadRequest("Checklist issues array is null or empty.");
             }
 
-            repository.Add(checklist);
+            if (request.Issues.Any(x => string.IsNullOrEmpty(x)))
+            {
+                return Results.BadRequest("Checklist issues array contains a null or empty item.");
+            }
 
-            await repository.SaveChangesAsync();
+            var checklistDto = await mediator.Send(new CreateChecklistCommand(request.ToChecklistDto()));
 
-            var checklistModel = new ChecklistDto(checklist.Id,
-                                                checklist.Name,
-                                                checklist.Issues.Select(x => new IssueDto(x.Id, x.Title)).ToArray());
-
-            return Results.Created($"/admin/checklists/{checklistModel.Id}", checklistModel);
+            return Results.Created($"/admin/checklists/{checklistDto.Id}", checklistDto);
         }
 
         public static async Task<IResult> GetChecklistById(IMediator mediator, int id)
@@ -143,6 +132,14 @@ namespace ComicChecklist.Presentation.Api.Endpoints
             {
                 return Results.NotFound();
             }
+        }
+    }
+
+    public static class RequestExtensions
+    {
+        public static ChecklistDto ToChecklistDto(this CreateChecklistRequest request)
+        {
+            return new ChecklistDto(0, request.Name, request.Issues.Select(issue => new IssueDto(0, issue)).ToArray());
         }
     }
 }

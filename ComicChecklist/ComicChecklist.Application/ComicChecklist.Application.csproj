@@ -6,10 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\" />
+    <Folder Include="Commands\UpdateChecklist\" />
     <Folder Include="Services\" />
-    <Folder Include="Queries\CreateChecklist\" />
-    <Folder Include="Queries\UpdateChecklist\" />
   </ItemGroup>
 
   <ItemGroup>
