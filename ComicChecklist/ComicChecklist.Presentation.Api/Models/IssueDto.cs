@@ -1,4 +1,4 @@
 ﻿namespace ComicChecklist.Presentation.Api.Models
 {
-    public record IssueModel(int Id, string Title);
+    public record IssueDto(int Id, string Title);
 }

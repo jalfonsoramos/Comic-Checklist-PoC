@@ -1,6 +1,8 @@
 ﻿using ComicChecklist.Data.Repositories;
 using ComicChecklist.Domain.Models;
+using ComicChecklist.Presentation.Api.Application.Queries;
 using ComicChecklist.Presentation.Api.Models;
+using MediatR;
 
 namespace ComicChecklist.Presentation.Api.Endpoints
 {
@@ -19,22 +21,22 @@ namespace ComicChecklist.Presentation.Api.Endpoints
         {
             group.MapGet("/", SearchChecklist)
                             .WithName("SearchChecklist")
-                            .Produces<ChecklistModel[]>(StatusCodes.Status200OK, "app/json")
+                            .Produces<ChecklistDto[]>(StatusCodes.Status200OK, "app/json")
                             .Produces(StatusCodes.Status400BadRequest)
                             .Produces(StatusCodes.Status500InternalServerError);
-            group.MapGet("/{id}", GetChecklist)
-                            .WithName("GetChecklist")
-                            .Produces<ChecklistModel>(StatusCodes.Status200OK, "app/json")
+            group.MapGet("/{id}", GetChecklistById)
+                            .WithName("GetChecklistById")
+                            .Produces<ChecklistDto>(StatusCodes.Status200OK, "app/json")
                             .Produces(StatusCodes.Status400BadRequest)
                             .Produces(StatusCodes.Status500InternalServerError);
             group.MapPost("/", CreateChecklist)
                             .WithName("CreateChecklist")
-                            .Produces<ChecklistModel>(StatusCodes.Status201Created, "app/json")
+                            .Produces<ChecklistDto>(StatusCodes.Status201Created, "app/json")
                             .Produces(StatusCodes.Status400BadRequest)
                             .Produces(StatusCodes.Status500InternalServerError);
             group.MapPut("/{id}", UpdateChecklist)
                             .WithName("UpdateChecklist")
-                            .Produces<ChecklistModel>(StatusCodes.Status200OK, "app/json")
+                            .Produces<ChecklistDto>(StatusCodes.Status200OK, "app/json")
                             .Produces(StatusCodes.Status400BadRequest)
                             .Produces(StatusCodes.Status500InternalServerError);
 
@@ -67,27 +69,17 @@ namespace ComicChecklist.Presentation.Api.Endpoints
 
             await repository.SaveChangesAsync();
 
-            var checklistModel = new ChecklistModel(checklist.Id,
+            var checklistModel = new ChecklistDto(checklist.Id,
                                                 checklist.Name,
-                                                checklist.Issues.Select(x => new IssueModel(x.Id, x.Title)).ToArray());
+                                                checklist.Issues.Select(x => new IssueDto(x.Id, x.Title)).ToArray());
 
             return Results.Created($"/admin/checklists/{checklistModel.Id}", checklistModel);
         }
 
-        public static async Task<IResult> GetChecklist(IChecklistRepository repository, int id)
-        {
-            Checklist checklist = await repository.GetAsync(id);
-
-            if (checklist == null)
-            {
-                return Results.NotFound();
-            }
-
-            var checklistModel = new ChecklistModel(checklist.Id,
-                                                checklist.Name,
-                                                checklist.Issues.OrderBy(x => x.Order).Select(x => new IssueModel(x.Id, x.Title)).ToArray());
-
-            return Results.Ok(checklistModel);
+        public static async Task<IResult> GetChecklistById(IMediator mediator, int id)
+        {            
+            var checklist = await mediator.Send(new GetChecklistByIdQuery(id));
+            return checklist != null ? Results.Ok(checklist) : Results.NotFound();
         }
 
         public static async Task<IResult> SearchChecklist(IChecklistRepository repository, string? name, int index)
@@ -99,9 +91,9 @@ namespace ComicChecklist.Presentation.Api.Endpoints
 
             var checklists = await repository.Search(name, index * 10, 10);
 
-            var checklistsModels = checklists.Select(checklist => new ChecklistModel(checklist.Id,
+            var checklistsModels = checklists.Select(checklist => new ChecklistDto(checklist.Id,
                                                                                     checklist.Name,
-                                                                                    checklist.Issues.OrderBy(x => x.Order).Select(x => new IssueModel(x.Id, x.Title)).ToArray()));
+                                                                                    checklist.Issues.OrderBy(x => x.Order).Select(x => new IssueDto(x.Id, x.Title)).ToArray()));
             return Results.Ok(checklistsModels);
 
 
@@ -114,7 +106,7 @@ namespace ComicChecklist.Presentation.Api.Endpoints
                 return Results.BadRequest("Checklist name is null or empty.");
             }
 
-            var checklist = await repository.GetAsync(id);
+            var checklist = await repository.GetByIdAsync(id);
 
             if (checklist != null)
             {
@@ -147,9 +139,9 @@ namespace ComicChecklist.Presentation.Api.Endpoints
 
                 await repository.SaveChangesAsync();
 
-                var checklistModel = new ChecklistModel(checklist.Id,
+                var checklistModel = new ChecklistDto(checklist.Id,
                                                checklist.Name,
-                                               checklist.Issues.OrderBy(x => x.Order).Select(x => new IssueModel(x.Id, x.Title)).ToArray());
+                                               checklist.Issues.OrderBy(x => x.Order).Select(x => new IssueDto(x.Id, x.Title)).ToArray());
 
                 return Results.Ok(checklistModel);
             }

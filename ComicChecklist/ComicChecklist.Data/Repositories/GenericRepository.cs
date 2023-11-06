@@ -17,7 +17,7 @@ namespace ComicChecklist.Data.Repositories
             DbContext.Set<T>().Add(entity);
         }
 
-        public virtual async Task<T> GetAsync(int id)
+        public virtual async Task<T> GetByIdAsync(int id)
         {
             return await DbContext.Set<T>().SingleOrDefaultAsync(x => x.Id == id);
         }

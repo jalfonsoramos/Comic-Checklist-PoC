@@ -9,7 +9,7 @@ namespace ComicChecklist.Data.Repositories
         {
         }
 
-        public override async Task<Checklist> GetAsync(int id)
+        public override async Task<Checklist> GetByIdAsync(int id)
         {
             return await DbContext.Checklists.Include(x => x.Issues).SingleOrDefaultAsync(x => x.Id == id);
         }
