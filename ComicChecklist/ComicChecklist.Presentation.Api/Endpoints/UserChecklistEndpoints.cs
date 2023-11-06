@@ -1,6 +1,6 @@
 ﻿internal static class UserChecklistEndpoints
 {
-    internal static void ConfigureEndpoints(WebApplication app)
+    internal static void AddUserChecklistEndpoints(this IEndpointRouteBuilder app)
     {
         // TODO: to be implemented
     }

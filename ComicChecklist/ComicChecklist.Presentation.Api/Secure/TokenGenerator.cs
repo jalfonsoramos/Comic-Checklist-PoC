@@ -3,7 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace ComicChecklist.Api.Secure
+namespace ComicChecklist.Presentation.Api.Secure
 {
     public static class TokenGenerator
     {

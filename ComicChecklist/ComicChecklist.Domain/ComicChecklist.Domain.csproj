@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Enums\" />
-    <Folder Include="ValueTypes\" />
+    <Compile Remove="Enums\**" />
+    <Compile Remove="ValueTypes\**" />
+    <EmbeddedResource Remove="Enums\**" />
+    <EmbeddedResource Remove="ValueTypes\**" />
+    <None Remove="Enums\**" />
+    <None Remove="ValueTypes\**" />
   </ItemGroup>
 
 </Project>

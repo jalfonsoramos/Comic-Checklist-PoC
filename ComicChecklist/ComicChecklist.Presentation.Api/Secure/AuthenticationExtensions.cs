@@ -2,7 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace ComicChecklist.Api.Secure
+namespace ComicChecklist.Presentation.Api.Secure
 {
     public static class AuthenticationExtensions
     {

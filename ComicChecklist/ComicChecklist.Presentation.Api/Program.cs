@@ -1,12 +1,11 @@
-using ComicChecklist.Api.Secure;
 using ComicChecklist.Data;
 using ComicChecklist.Data.Repositories;
+using ComicChecklist.Presentation.Api.Endpoints;
+using ComicChecklist.Presentation.Api.Secure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
 
 // Add EF Core dbcontext
 builder.Services.AddDbContext<ComicChecklistDbContext>(options =>
@@ -70,8 +69,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-AdminChecklistEndpoints.ConfigureEndpoints(app);
-UserChecklistEndpoints.ConfigureEndpoints(app);
-LoginEndpoints.ConfigureEndpoints(app);
+app.AddLoginEndpoints();
+app.AddAdminChecklistEndpoints();
+app.AddUserChecklistEndpoints();
 
 app.Run();
