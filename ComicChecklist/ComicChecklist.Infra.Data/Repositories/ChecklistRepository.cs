@@ -2,7 +2,7 @@
 using ComicChecklist.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ComicChecklist.Data.Repositories
+namespace ComicChecklist.Infra.Data.Repositories
 {
     public class ChecklistRepository : GenericRepository<Checklist>, IChecklistRepository
     {
@@ -28,7 +28,7 @@ namespace ComicChecklist.Data.Repositories
             else
             {
                 return await DbContext.Checklists.Where(x => x.Name.Contains(name))
-                                                 .Include(x => x.Issues)                                                 
+                                                 .Include(x => x.Issues)
                                                  .OrderBy(x => x.Name)
                                                  .Skip(skip)
                                                  .Take(take)

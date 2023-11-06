@@ -1,8 +1,8 @@
-﻿using ComicChecklist.Data.Configurations;
+﻿using ComicChecklist.Infra.Data.Configurations;
 using ComicChecklist.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ComicChecklist.Data
+namespace ComicChecklist.Infra.Data
 {
     public class ComicChecklistDbContext : DbContext
     {

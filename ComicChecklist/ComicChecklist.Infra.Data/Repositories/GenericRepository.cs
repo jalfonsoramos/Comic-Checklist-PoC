@@ -2,7 +2,7 @@
 using ComicChecklist.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ComicChecklist.Data.Repositories
+namespace ComicChecklist.Infra.Data.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : Entity
     {

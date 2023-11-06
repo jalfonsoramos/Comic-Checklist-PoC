@@ -1,6 +1,6 @@
-using ComicChecklist.Data;
-using ComicChecklist.Data.Repositories;
 using ComicChecklist.Domain.Interfaces.Repositories;
+using ComicChecklist.Infra.Data;
+using ComicChecklist.Infra.Data.Repositories;
 using ComicChecklist.Presentation.Api.Endpoints;
 using ComicChecklist.Presentation.Api.Secure;
 using Microsoft.EntityFrameworkCore;

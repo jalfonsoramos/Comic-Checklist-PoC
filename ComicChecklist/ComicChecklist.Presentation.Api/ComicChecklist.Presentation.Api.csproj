@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ComicChecklist.Application\ComicChecklist.Application.csproj" />
-    <ProjectReference Include="..\ComicChecklist.Data\ComicChecklist.Data.csproj" />
+    <ProjectReference Include="..\ComicChecklist.Infra.Data\ComicChecklist.Infra.Data.csproj" />
     <ProjectReference Include="..\ComicChecklist.Domain\ComicChecklist.Domain.csproj" />
   </ItemGroup>
 

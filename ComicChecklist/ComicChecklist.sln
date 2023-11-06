@@ -5,11 +5,11 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComicChecklist.Domain", "ComicChecklist.Domain\ComicChecklist.Domain.csproj", "{D3CBBD7D-DF20-4224-9E70-13BE8A38AC11}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComicChecklist.Data", "ComicChecklist.Data\ComicChecklist.Data.csproj", "{C4495398-FD8A-4C9C-8CF6-EB6AD30D59C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComicChecklist.Infra.Data", "ComicChecklist.Infra.Data\ComicChecklist.Infra.Data.csproj", "{C4495398-FD8A-4C9C-8CF6-EB6AD30D59C6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComicChecklist.Presentation.Api", "ComicChecklist.Presentation.Api\ComicChecklist.Presentation.Api.csproj", "{99C9A5A5-04E2-45C4-A093-7F7F78CB0FD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComicChecklist.Application", "ComicChecklist.Application\ComicChecklist.Application.csproj", "{5C069E59-4D64-4740-968A-3A4E0F5D3992}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComicChecklist.Application", "ComicChecklist.Application\ComicChecklist.Application.csproj", "{5C069E59-4D64-4740-968A-3A4E0F5D3992}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

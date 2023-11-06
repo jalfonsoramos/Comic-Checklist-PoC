@@ -1,10 +1,8 @@
 ﻿using ComicChecklist.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Diagnostics;
-using System.Reflection.Emit;
 
-namespace ComicChecklist.Data.Configurations
+namespace ComicChecklist.Infra.Data.Configurations
 {
     internal class ChecklistConfiguration : IEntityTypeConfiguration<Checklist>
     {
