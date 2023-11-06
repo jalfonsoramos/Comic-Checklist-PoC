@@ -18,8 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ComicChecklist.Application\ComicChecklist.Application.csproj" />
     <ProjectReference Include="..\ComicChecklist.Data\ComicChecklist.Data.csproj" />
     <ProjectReference Include="..\ComicChecklist.Domain\ComicChecklist.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Application\" />
   </ItemGroup>
 
 </Project>

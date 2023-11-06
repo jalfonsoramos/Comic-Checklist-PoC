@@ -1,6 +1,6 @@
 ﻿using ComicChecklist.Domain.Models;
 
-namespace ComicChecklist.Data.Repositories
+namespace ComicChecklist.Domain.Interfaces.Repositories
 {
     public interface IGenericRepository<T> where T : Entity
     {

@@ -1,8 +1,8 @@
-﻿using ComicChecklist.Data.Repositories;
-using ComicChecklist.Presentation.Api.Models;
+﻿using ComicChecklist.Domain.Dtos;
+using ComicChecklist.Domain.Interfaces.Repositories;
 using MediatR;
 
-namespace ComicChecklist.Presentation.Api.Application.Queries
+namespace ComicChecklist.Application.Queries
 {
     public class GetChecklistByIdHandler : IRequestHandler<GetChecklistByIdQuery, ChecklistDto>
     {
@@ -13,9 +13,9 @@ namespace ComicChecklist.Presentation.Api.Application.Queries
             _checklistRepository = checklistRepository;
         }
 
-        public async Task<ChecklistDto> Handle(GetChecklistByIdQuery query, CancellationToken cancellationToken)
+        public async Task<ChecklistDto> Handle(GetChecklistByIdQuery request, CancellationToken cancellationToken)
         {
-            var checklist = await _checklistRepository.GetByIdAsync(query.checkListId);
+            var checklist = await _checklistRepository.GetByIdAsync(request.CheckListId);
 
             if (checklist == null)
             {

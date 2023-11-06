@@ -1,4 +1,5 @@
-﻿using ComicChecklist.Domain.Models;
+﻿using ComicChecklist.Domain.Interfaces.Repositories;
+using ComicChecklist.Domain.Models;
 
 namespace ComicChecklist.Data.Repositories
 {

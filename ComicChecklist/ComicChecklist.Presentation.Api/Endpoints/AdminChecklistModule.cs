@@ -1,6 +1,7 @@
-﻿using ComicChecklist.Data.Repositories;
+﻿using ComicChecklist.Application.Queries;
+using ComicChecklist.Domain.Dtos;
+using ComicChecklist.Domain.Interfaces.Repositories;
 using ComicChecklist.Domain.Models;
-using ComicChecklist.Presentation.Api.Application.Queries;
 using ComicChecklist.Presentation.Api.Models;
 using MediatR;
 
@@ -77,26 +78,19 @@ namespace ComicChecklist.Presentation.Api.Endpoints
         }
 
         public static async Task<IResult> GetChecklistById(IMediator mediator, int id)
-        {            
+        {
             var checklist = await mediator.Send(new GetChecklistByIdQuery(id));
             return checklist != null ? Results.Ok(checklist) : Results.NotFound();
         }
 
-        public static async Task<IResult> SearchChecklist(IChecklistRepository repository, string? name, int index)
+        public static async Task<IResult> SearchChecklist(IMediator mediator, string name, int index)
         {
             if (index < 0)
             {
                 return Results.BadRequest("Invalid search criteria");
             }
-
-            var checklists = await repository.Search(name, index * 10, 10);
-
-            var checklistsModels = checklists.Select(checklist => new ChecklistDto(checklist.Id,
-                                                                                    checklist.Name,
-                                                                                    checklist.Issues.OrderBy(x => x.Order).Select(x => new IssueDto(x.Id, x.Title)).ToArray()));
-            return Results.Ok(checklistsModels);
-
-
+            var checkists = await mediator.Send(new SearchChecklistQuery(name, index));
+            return checkists != null ? Results.Ok(checkists) : Results.Ok(Enumerable.Empty<ChecklistDto>);
         }
 
         public static async Task<IResult> UpdateChecklist(IChecklistRepository repository, UpdateChecklistRequest request, int id)

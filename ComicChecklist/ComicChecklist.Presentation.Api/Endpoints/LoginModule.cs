@@ -8,7 +8,7 @@ namespace ComicChecklist.Presentation.Api.Endpoints
         public static void AddLoginEndpoints(this IEndpointRouteBuilder app)
         {
             // Simulate login for testing purposes
-            app.MapPost("/token", (CredentialsModel credentials) =>
+            app.MapPost("/token", (CredentialsDto credentials) =>
             {
                 if (credentials == null)
                 {
