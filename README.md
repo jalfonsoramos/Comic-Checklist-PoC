@@ -4,7 +4,7 @@ Login Endpoints
 
 | endpoint                   | verb      | description                                             |
 | ---                        | ---       | ---                                                     |
-| /token                     | POST      | As administrator create new checklist                   |
+| /token                     | POST      | Get an access token as Admin or EndUser                 |
 
 
 Checklist Endpoints
