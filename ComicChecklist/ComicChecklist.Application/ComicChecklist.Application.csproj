@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\UpdateChecklist\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
