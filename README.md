@@ -1,11 +1,23 @@
-# Distillery-Comic-Checklist
+# ComicChecklist
+
+## A PoC of Minimal Api and .NET MAUI
+
+### Tech Stack
+
+- .NET 7
+- C#
+- Minimal Api
+- .NET MAUI
+- Third Party Libraries
+  - MediatR 
+
+### Api Doc
 
 Login Endpoints
 
 | endpoint                   | verb      | description                                             |
 | ---                        | ---       | ---                                                     |
-| /token                     | POST      | Get an access token as Admin or EndUser                 |
-
+| /token                     | POST      | Get an access token as Admin or EndUser*                | 
 
 Checklist Endpoints
 
@@ -13,6 +25,5 @@ Checklist Endpoints
 | ---                        | ---       | ---                                                     |
 | /admin/checklist           | POST      | As administrator create new checklist                   |
 | /admin/checklist/{id}      | PUT       | As administrator modify checklist                       |
-| /admin/checklist/{id}      | DELETE    | As administrator delete (soft) checklist (out of scope) |
 | /admin/checklist/{id}      | GET       | As administrator get single checklist                   |
 | /admin/checklist?name&page | GET       | As administrator get checklists                         |
