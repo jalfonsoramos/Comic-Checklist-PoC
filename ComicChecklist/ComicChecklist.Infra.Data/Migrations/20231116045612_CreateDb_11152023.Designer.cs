@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComicChecklist.Infra.Data.Migrations
 {
     [DbContext(typeof(ComicChecklistDbContext))]
-    [Migration("20231116025131_CreateDb_11152023")]
+    [Migration("20231116045612_CreateDb_11152023")]
     partial class CreateDb_11152023
     {
         /// <inheritdoc />
@@ -98,6 +98,16 @@ namespace ComicChecklist.Infra.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Clocked")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime>("Createad")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2")
+                        .HasComputedColumnSql("GETUTCDATE()");
 
                     b.Property<string>("UserName")
                         .IsRequired()

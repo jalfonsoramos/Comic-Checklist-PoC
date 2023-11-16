@@ -10,6 +10,18 @@ namespace ComicChecklist.Infra.Data.Repositories
         {
         }
 
+        public async Task<IEnumerable<Checklist>> GetAvailableChecklists(int userId)
+        {
+            return await DbContext.Checklists
+                                  .Include(x=>x.Issues)
+                                  .AsNoTracking()
+                                  .Where(c => !DbContext.UserChecklists
+                                  .Where(uc => uc.UserId == userId)
+                                  .Select(uc => uc.ChecklistId)
+                                  .Contains(c.Id))
+                                  .ToListAsync();
+        }
+
         public override async Task<Checklist> GetByIdAsync(int id)
         {
             return await DbContext.Checklists.Include(x => x.Issues).SingleOrDefaultAsync(x => x.Id == id);

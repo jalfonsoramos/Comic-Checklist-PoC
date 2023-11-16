@@ -12,6 +12,8 @@ namespace ComicChecklist.Infra.Data.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).IsRequired();
             builder.Property(x => x.UserName).HasMaxLength(25).IsRequired();
+            builder.Property(x => x.Clocked).HasDefaultValue(false);
+            builder.Property(x => x.Createad).HasComputedColumnSql("GETUTCDATE()");
         }
     }
 }

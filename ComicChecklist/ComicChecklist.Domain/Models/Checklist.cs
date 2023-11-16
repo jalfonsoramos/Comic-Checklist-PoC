@@ -5,12 +5,13 @@
         public Checklist()
         {
             Issues = new HashSet<Issue>();
+            UserChecklists = new HashSet<UserChecklist>();
         }
 
         public string Name { get; set; }
 
         public ICollection<Issue> Issues { get; set; }
 
-        public IList<UserChecklist> UserChecklists { get; set; }
+        public ICollection<UserChecklist> UserChecklists { get; set; }
     }
 }

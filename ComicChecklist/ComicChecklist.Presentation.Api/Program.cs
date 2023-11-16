@@ -17,6 +17,7 @@ builder.Services.AddDbContext<ComicChecklistDbContext>(options =>
 
 // Add services to the container.
 builder.Services.AddTransient<IChecklistRepository, ChecklistRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
 
 // Add MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateChecklistCommand).Assembly));
