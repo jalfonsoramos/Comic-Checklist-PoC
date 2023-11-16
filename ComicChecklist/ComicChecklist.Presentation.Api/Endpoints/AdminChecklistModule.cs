@@ -84,12 +84,7 @@ namespace ComicChecklist.Presentation.Api.Endpoints
         }
 
         public static async Task<IResult> UpdateChecklist(IMediator mediator, UpdateChecklistRequest request, int id)
-        {
-            if (string.IsNullOrEmpty(request.Name))
-            {
-                return Results.BadRequest("Checklist name is null or empty.");
-            }
-
+        {           
             var result = await mediator.Send(new UpdateChecklistCommand(request.ToChecklistDto(id)));
 
             return result.IsSuccess ? Results.Ok(result.Value) : Results.NotFound(result.Errors);
