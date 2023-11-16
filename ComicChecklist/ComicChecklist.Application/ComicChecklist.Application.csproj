@@ -6,13 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Interfaces\Services\**" />
     <Compile Remove="Services\**" />
+    <EmbeddedResource Remove="Interfaces\Services\**" />
     <EmbeddedResource Remove="Services\**" />
+    <None Remove="Interfaces\Services\**" />
     <None Remove="Services\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Interfaces\Services\" />
   </ItemGroup>
 
   <ItemGroup>

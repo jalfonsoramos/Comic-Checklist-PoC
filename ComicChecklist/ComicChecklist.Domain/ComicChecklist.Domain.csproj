@@ -7,11 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Enums\**" />
     <Compile Remove="ValueTypes\**" />
-    <EmbeddedResource Remove="Enums\**" />
     <EmbeddedResource Remove="ValueTypes\**" />
-    <None Remove="Enums\**" />
     <None Remove="ValueTypes\**" />
   </ItemGroup>
 

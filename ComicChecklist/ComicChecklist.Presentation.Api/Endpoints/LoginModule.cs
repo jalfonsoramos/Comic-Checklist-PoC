@@ -21,11 +21,10 @@ namespace ComicChecklist.Presentation.Api.Endpoints
                 }
 
                 bool validCredentials = credentials.UserName.Equals("Admin") && credentials.Pwd.Equals("4dm1n") ||
-                                   credentials.UserName.Equals("User") && credentials.Pwd.Equals("us3r");
+                                   credentials.UserName.Equals("User1") && credentials.Pwd.Equals("us3r");
 
                 if (validCredentials)
                 {
-
                     bool isAdmin = credentials.UserName.Equals("Admin");
                     // Generate JWT token
                     return TokenGenerator.GenerateTokenEndpoint(Settings.JwtSecretKey, Settings.TokenExpiryMinutes, credentials.UserName, isAdmin);

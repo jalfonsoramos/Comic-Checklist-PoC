@@ -9,5 +9,7 @@
         public int ChecklistId { get; set; }
 
         public Checklist Checklist { get; set; }
+
+        public IList<UserIssueStatus> UserIssueStatuses { get; set; }
     }
 }

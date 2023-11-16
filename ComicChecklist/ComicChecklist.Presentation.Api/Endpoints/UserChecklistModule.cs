@@ -1,7 +1,35 @@
-﻿internal static class UserChecklistModule
+﻿using ComicChecklist.Domain.Dtos;
+using MediatR;
+using System.Security.Claims;
+
+namespace ComicChecklist.Presentation.Api.Endpoints
 {
-    internal static void AddUserChecklistEndpoints(this IEndpointRouteBuilder app)
+    public static class UserChecklistModule
     {
-        // TODO: to be implemented
+        public static void AddUserChecklistEndpoints(this IEndpointRouteBuilder app)
+        {
+            app.MapGroup("/checklists")
+                .MapChecklistApi()
+                .WithTags("Public")
+                .WithOpenApi()
+                .RequireAuthorization("admin");
+        }
+
+        private static RouteGroupBuilder MapChecklistApi(this RouteGroupBuilder group)
+        {
+            group.MapGet("/", GetAvailableChecklists)
+                            .WithName("GetAvailableChecklists")
+                            .Produces<ChecklistDto[]>(StatusCodes.Status200OK, "app/json")
+                            .Produces(StatusCodes.Status400BadRequest)
+                            .Produces(StatusCodes.Status500InternalServerError);
+
+            return group;
+        }
+
+        private static async Task<IResult> GetAvailableChecklists(IMediator mediator, ClaimsPrincipal user)
+        {
+            throw new NotImplementedException();
+            //return Results.Ok(user.Identity.Name);
+        }
     }
 }

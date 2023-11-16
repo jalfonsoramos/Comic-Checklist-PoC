@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace ComicChecklist.Data.Migrations
+namespace ComicChecklist.Infra.Data.Migrations
 {
     [DbContext(typeof(ComicChecklistDbContext))]
     partial class ComicChecklistDbContextModelSnapshot : ModelSnapshot
@@ -88,6 +88,55 @@ namespace ComicChecklist.Data.Migrations
                     b.ToTable("Issues", (string)null);
                 });
 
+            modelBuilder.Entity("ComicChecklist.Domain.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("ComicChecklist.Domain.Models.UserChecklist", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ChecklistId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "ChecklistId");
+
+                    b.ToTable("UserChecklists", (string)null);
+                });
+
+            modelBuilder.Entity("ComicChecklist.Domain.Models.UserIssueStatus", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IssueId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "IssueId");
+
+                    b.HasIndex("IssueId");
+
+                    b.ToTable("UserIssueStatuses", (string)null);
+                });
+
             modelBuilder.Entity("ComicChecklist.Domain.Models.Issue", b =>
                 {
                     b.HasOne("ComicChecklist.Domain.Models.Checklist", "Checklist")
@@ -99,9 +148,61 @@ namespace ComicChecklist.Data.Migrations
                     b.Navigation("Checklist");
                 });
 
+            modelBuilder.Entity("ComicChecklist.Domain.Models.UserChecklist", b =>
+                {
+                    b.HasOne("ComicChecklist.Domain.Models.Checklist", "Checklist")
+                        .WithMany("UserChecklists")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ComicChecklist.Domain.Models.User", "User")
+                        .WithMany("UserChecklists")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Checklist");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ComicChecklist.Domain.Models.UserIssueStatus", b =>
+                {
+                    b.HasOne("ComicChecklist.Domain.Models.Issue", "Issue")
+                        .WithMany("UserIssueStatuses")
+                        .HasForeignKey("IssueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ComicChecklist.Domain.Models.User", "User")
+                        .WithMany("UserIssueStatuses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Issue");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ComicChecklist.Domain.Models.Checklist", b =>
                 {
                     b.Navigation("Issues");
+
+                    b.Navigation("UserChecklists");
+                });
+
+            modelBuilder.Entity("ComicChecklist.Domain.Models.Issue", b =>
+                {
+                    b.Navigation("UserIssueStatuses");
+                });
+
+            modelBuilder.Entity("ComicChecklist.Domain.Models.User", b =>
+                {
+                    b.Navigation("UserChecklists");
+
+                    b.Navigation("UserIssueStatuses");
                 });
 #pragma warning restore 612, 618
         }

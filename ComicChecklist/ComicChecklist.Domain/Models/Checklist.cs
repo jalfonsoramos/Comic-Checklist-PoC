@@ -10,5 +10,7 @@
         public string Name { get; set; }
 
         public ICollection<Issue> Issues { get; set; }
+
+        public IList<UserChecklist> UserChecklists { get; set; }
     }
 }

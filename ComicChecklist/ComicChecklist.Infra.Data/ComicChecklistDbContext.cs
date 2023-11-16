@@ -10,6 +10,12 @@ namespace ComicChecklist.Infra.Data
 
         public DbSet<Issue> Issues { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<UserChecklist> UserChecklists { get; set; }
+
+        public DbSet<UserIssueStatus> UserIssues { get; set; }
+
         public ComicChecklistDbContext(DbContextOptions<ComicChecklistDbContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -21,6 +27,9 @@ namespace ComicChecklist.Infra.Data
         {
             modelBuilder.ApplyConfiguration(new ChecklistConfiguration());
             modelBuilder.ApplyConfiguration(new IssueConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new UserChecklistConfiguration());
+            modelBuilder.ApplyConfiguration(new UserIssueStatusConfiguration());
         }
     }
 }

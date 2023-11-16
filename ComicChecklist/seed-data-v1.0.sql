@@ -54,7 +54,8 @@ INSERT INTO [dbo].[Issues]([Title],[ChecklistId],[Order])VALUES('New Mutants #6'
 INSERT INTO [dbo].[Issues]([Title],[ChecklistId],[Order])VALUES('X-Force #6',@checklistid,4);
 INSERT INTO [dbo].[Issues]([Title],[ChecklistId],[Order])VALUES('Fallen Angels #6',@checklistid,5);
 
-
+INSERT INTO [dbo].[Users]([UserName])VALUES('Admin');
+INSERT INTO [dbo].[Users]([UserName])VALUES('User1');
 
 --delete Issues;
 --delete Checklists;
