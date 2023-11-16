@@ -1,5 +1,5 @@
-using ComicChecklist.Application.Commands;
-using ComicChecklist.Domain.Interfaces.Repositories;
+using ComicChecklist.Application.Interfaces.Repositories;
+using ComicChecklist.Application.UseCases.Commands;
 using ComicChecklist.Infra.Data;
 using ComicChecklist.Infra.Data.Repositories;
 using ComicChecklist.Presentation.Api.Endpoints;

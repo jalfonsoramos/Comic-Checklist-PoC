@@ -1,9 +1,9 @@
-﻿using ComicChecklist.Domain.Dtos;
-using ComicChecklist.Domain.Interfaces.Repositories;
+﻿using ComicChecklist.Application.Interfaces.Repositories;
+using ComicChecklist.Domain.Dtos;
 using ComicChecklist.Domain.Models;
 using MediatR;
 
-namespace ComicChecklist.Application.Commands
+namespace ComicChecklist.Application.UseCases.Commands
 {
     public class CreateChecklistHandler : IRequestHandler<CreateChecklistCommand, ChecklistDto>
     {

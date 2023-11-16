@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ComicChecklist.Application\ComicChecklist.Application.csproj" />
     <ProjectReference Include="..\ComicChecklist.Domain\ComicChecklist.Domain.csproj" />
   </ItemGroup>
 

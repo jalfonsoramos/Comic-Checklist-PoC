@@ -1,8 +1,8 @@
-﻿using ComicChecklist.Domain.Dtos;
-using ComicChecklist.Domain.Interfaces.Repositories;
+﻿using ComicChecklist.Application.Interfaces.Repositories;
+using ComicChecklist.Domain.Dtos;
 using MediatR;
 
-namespace ComicChecklist.Application.Queries
+namespace ComicChecklist.Application.UseCases.Queries
 {
     public class GetChecklistByIdHandler : IRequestHandler<GetChecklistByIdQuery, ChecklistDto>
     {

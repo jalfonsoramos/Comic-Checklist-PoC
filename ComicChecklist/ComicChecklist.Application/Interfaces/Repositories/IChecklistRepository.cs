@@ -1,6 +1,6 @@
 ﻿using ComicChecklist.Domain.Models;
 
-namespace ComicChecklist.Domain.Interfaces.Repositories
+namespace ComicChecklist.Application.Interfaces.Repositories
 {
     public interface IChecklistRepository : IGenericRepository<Checklist>
     {

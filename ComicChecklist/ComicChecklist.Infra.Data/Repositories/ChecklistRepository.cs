@@ -1,4 +1,4 @@
-﻿using ComicChecklist.Domain.Interfaces.Repositories;
+﻿using ComicChecklist.Application.Interfaces.Repositories;
 using ComicChecklist.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 

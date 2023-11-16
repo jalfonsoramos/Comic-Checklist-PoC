@@ -1,7 +1,8 @@
-﻿using ComicChecklist.Application.Commands;
-using ComicChecklist.Application.Queries;
+﻿using ComicChecklist.Application.Interfaces.Repositories;
+using ComicChecklist.Application.UseCases.Commands;
+using ComicChecklist.Application.UseCases.Queries;
 using ComicChecklist.Domain.Dtos;
-using ComicChecklist.Domain.Interfaces.Repositories;
+using ComicChecklist.Presentation.Api.ExtensionMethods;
 using ComicChecklist.Presentation.Api.Models;
 using MediatR;
 
@@ -82,64 +83,16 @@ namespace ComicChecklist.Presentation.Api.Endpoints
             return checkists != null ? Results.Ok(checkists) : Results.Ok(Enumerable.Empty<ChecklistDto>);
         }
 
-        public static async Task<IResult> UpdateChecklist(IChecklistRepository repository, UpdateChecklistRequest request, int id)
+        public static async Task<IResult> UpdateChecklist(IMediator mediator, UpdateChecklistRequest request, int id)
         {
             if (string.IsNullOrEmpty(request.Name))
             {
                 return Results.BadRequest("Checklist name is null or empty.");
             }
 
-            var checklist = await repository.GetByIdAsync(id);
+            var result = await mediator.Send(new UpdateChecklistCommand(request.ToChecklistDto(id)));
 
-            if (checklist != null)
-            {
-                if (request.Issues.Count() == checklist.Issues.Count)
-                {
-                    if (request.Issues.All(x => checklist.Issues.Any(y => y.Id == x.Id)))
-                    {
-                        checklist.Name = request.Name;
-
-                        for (var i = 0; i < request.Issues.Count(); i++)
-                        {
-                            var issueId = request.Issues[i].Id;
-                            var issue = checklist.Issues.SingleOrDefault(x => x.Id == issueId);
-
-                            if (issue != null)
-                            {
-                                issue.Order = i;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        return Results.BadRequest("Issue list is invalid: IDs does not match.");
-                    }
-                }
-                else
-                {
-                    return Results.BadRequest("Issue list is invalid: Issues count mismatch.");
-                }
-
-                await repository.SaveChangesAsync();
-
-                var checklistModel = new ChecklistDto(checklist.Id,
-                                               checklist.Name,
-                                               checklist.Issues.OrderBy(x => x.Order).Select(x => new IssueDto(x.Id, x.Title)).ToArray());
-
-                return Results.Ok(checklistModel);
-            }
-            else
-            {
-                return Results.NotFound();
-            }
-        }
-    }
-
-    public static class RequestExtensions
-    {
-        public static ChecklistDto ToChecklistDto(this CreateChecklistRequest request)
-        {
-            return new ChecklistDto(0, request.Name, request.Issues.Select(issue => new IssueDto(0, issue)).ToArray());
+            return result.IsSuccess ? Results.Ok(result.Value) : Results.NotFound(result.Errors);
         }
     }
 }
