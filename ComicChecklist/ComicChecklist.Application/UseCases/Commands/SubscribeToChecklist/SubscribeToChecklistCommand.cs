@@ -3,5 +3,5 @@ using MediatR;
 
 namespace ComicChecklist.Application.UseCases.Commands
 {
-    public record UpdateChecklistCommand(ChecklistDto Checklist) : IRequest<UseCaseResult<ChecklistDto>>;
+    public record SubscribeToChecklistCommand(string UserName, int ChecklistId) : IRequest<UseCaseResult>;
 }

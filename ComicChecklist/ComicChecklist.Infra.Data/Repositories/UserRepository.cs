@@ -11,7 +11,7 @@ namespace ComicChecklist.Infra.Data.Repositories
 
         }
 
-        public async Task<int> GetUserByName(string username)
+        public async Task<int> GetUserIdByNameAsync(string username)
         {
             var user = await DbContext.Users.AsNoTracking().SingleAsync(x => x.UserName == username);
             return user.Id;

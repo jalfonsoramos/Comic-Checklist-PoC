@@ -4,7 +4,7 @@ using MediatR;
 
 namespace ComicChecklist.Application.UseCases.Commands
 {
-    public class UpdateChecklistHandler : IRequestHandler<UpdateChecklistCommand, ResultDto<ChecklistDto>>
+    public class UpdateChecklistHandler : IRequestHandler<UpdateChecklistCommand, UseCaseResult<ChecklistDto>>
     {
         private readonly IChecklistRepository _checklistRepository;
 
@@ -13,18 +13,18 @@ namespace ComicChecklist.Application.UseCases.Commands
             _checklistRepository = checklistRepository;
         }
 
-        public async Task<ResultDto<ChecklistDto>> Handle(UpdateChecklistCommand request, CancellationToken cancellationToken)
+        public async Task<UseCaseResult<ChecklistDto>> Handle(UpdateChecklistCommand request, CancellationToken cancellationToken)
         {
             if(string.IsNullOrEmpty(request.Checklist.Name))
             {
-                return ResultDto<ChecklistDto>.CreateFailResult("Checklist name is null or empty.");
+                return UseCaseResult<ChecklistDto>.CreateFailResult("Checklist name is null or empty.");
             }
 
             var currentChecklist = await _checklistRepository.GetByIdAsync(request.Checklist.Id);
 
             if (currentChecklist == null)
             {
-                return ResultDto<ChecklistDto>.CreateFailResult("Checklist not found.");
+                return UseCaseResult<ChecklistDto>.CreateFailResult("Checklist not found.");
             }
 
             if (request.Checklist.Issues.Length == currentChecklist.Issues.Count)
@@ -35,7 +35,7 @@ namespace ComicChecklist.Application.UseCases.Commands
 
                     if(request.Checklist.Issues.Any(x=>string.IsNullOrEmpty(x.Title)))
                     {
-                        return ResultDto<ChecklistDto>.CreateFailResult("Issue title null or empty found.");
+                        return UseCaseResult<ChecklistDto>.CreateFailResult("Issue title null or empty found.");
                     }
 
                     for (var i = 0; i < request.Checklist.Issues.Length; i++)
@@ -51,12 +51,12 @@ namespace ComicChecklist.Application.UseCases.Commands
                 }
                 else
                 {
-                    return ResultDto<ChecklistDto>.CreateFailResult("Issue list is invalid: IDs does not match.");
+                    return UseCaseResult<ChecklistDto>.CreateFailResult("Issue list is invalid: IDs does not match.");
                 }
             }
             else
             {
-                return ResultDto<ChecklistDto>.CreateFailResult("Issue list is invalid: Issues count mismatch.");
+                return UseCaseResult<ChecklistDto>.CreateFailResult("Issue list is invalid: Issues count mismatch.");
             }
 
             await _checklistRepository.SaveChangesAsync();
@@ -65,7 +65,7 @@ namespace ComicChecklist.Application.UseCases.Commands
                                            currentChecklist.Name,
                                            currentChecklist.Issues.OrderBy(x => x.Order).Select(x => new IssueDto(x.Id, x.Title)).ToArray());
 
-            return ResultDto<ChecklistDto>.CreateSuccessResult(updatedChecklist);
+            return UseCaseResult<ChecklistDto>.CreateSuccessResult(updatedChecklist);
         }
     }
 }

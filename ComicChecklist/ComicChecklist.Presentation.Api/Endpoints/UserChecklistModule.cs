@@ -1,4 +1,5 @@
-﻿using ComicChecklist.Application.UseCases.Queries;
+﻿using ComicChecklist.Application.UseCases.Commands;
+using ComicChecklist.Application.UseCases.Queries;
 using ComicChecklist.Domain.Dtos;
 using MediatR;
 using System.Security.Claims;
@@ -41,7 +42,8 @@ namespace ComicChecklist.Presentation.Api.Endpoints
 
         private static async Task<IResult> SubscribeToChecklist(IMediator mediator, ClaimsPrincipal user, int checkListId)
         {
-            throw new NotImplementedException();
+            var result = await mediator.Send(new SubscribeToChecklistCommand(user.Identity.Name, checkListId));
+            return result.IsSuccess ? Results.Ok() : Results.BadRequest(result.Errors);
         }
     }
 }

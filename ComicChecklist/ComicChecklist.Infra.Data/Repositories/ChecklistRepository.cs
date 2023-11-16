@@ -10,10 +10,10 @@ namespace ComicChecklist.Infra.Data.Repositories
         {
         }
 
-        public async Task<IEnumerable<Checklist>> GetAvailableChecklists(int userId)
+        public async Task<IEnumerable<Checklist>> GetAvailableChecklistsAsync(int userId)
         {
             return await DbContext.Checklists
-                                  .Include(x=>x.Issues)
+                                  .Include(x => x.Issues)
                                   .AsNoTracking()
                                   .Where(c => !DbContext.UserChecklists
                                   .Where(uc => uc.UserId == userId)
@@ -27,7 +27,7 @@ namespace ComicChecklist.Infra.Data.Repositories
             return await DbContext.Checklists.Include(x => x.Issues).SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<Checklist>> Search(string name, int skip, int take)
+        public async Task<IEnumerable<Checklist>> SearchAsync(string name, int skip, int take)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -46,6 +46,17 @@ namespace ComicChecklist.Infra.Data.Repositories
                                                  .Take(take)
                                                  .ToListAsync();
             }
+        }
+
+        public async Task SubscribeToChecklist(int userId, int checklistId)
+        {
+            var userChecklist = new UserChecklist
+            {
+                UserId = userId,
+                ChecklistId = checklistId
+            };
+
+            await DbContext.UserChecklists.AddAsync(userChecklist);
         }
     }
 }
