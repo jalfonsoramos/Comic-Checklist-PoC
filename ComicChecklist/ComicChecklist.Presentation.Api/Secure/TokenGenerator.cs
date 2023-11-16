@@ -19,7 +19,7 @@ namespace ComicChecklist.Presentation.Api.Secure
                 Subject = new ClaimsIdentity(new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, userName), // Set the claim with the name of the token user
-                    new Claim(ClaimTypes.Role, isAdmin?"admin":"enduser") // Set the claim with the role of the token user
+                    new Claim(ClaimTypes.Role, isAdmin?"role_admin":"role_user") // Set the claim with the role of the token user
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(tokenExpiryMinutes), // Set the token expiration time
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature) // Set the signing credentials for the token

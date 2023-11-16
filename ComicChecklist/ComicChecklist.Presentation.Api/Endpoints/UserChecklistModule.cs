@@ -12,7 +12,7 @@ namespace ComicChecklist.Presentation.Api.Endpoints
                 .MapChecklistApi()
                 .WithTags("Public")
                 .WithOpenApi()
-                .RequireAuthorization("admin");
+                .RequireAuthorization("public");
         }
 
         private static RouteGroupBuilder MapChecklistApi(this RouteGroupBuilder group)

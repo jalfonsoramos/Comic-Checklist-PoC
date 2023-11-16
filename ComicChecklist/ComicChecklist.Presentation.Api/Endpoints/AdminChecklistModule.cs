@@ -16,7 +16,7 @@ namespace ComicChecklist.Presentation.Api.Endpoints
                 .MapAdminChecklistApi()
                 .WithTags("Backoffice")
                 .WithOpenApi()
-                .RequireAuthorization("admin");
+                .RequireAuthorization("private");
         }
 
         private static RouteGroupBuilder MapAdminChecklistApi(this RouteGroupBuilder group)

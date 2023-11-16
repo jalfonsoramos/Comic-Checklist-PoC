@@ -55,8 +55,8 @@ builder.Services.AddSwaggerGen(opt =>
 builder.Services.AddAuthorization(options =>
 {
     // Setting two simple role policies for testing
-    options.AddPolicy("admin", policy => policy.RequireRole("admin"));
-    options.AddPolicy("enduser", policy => policy.RequireRole("enduser"));
+    options.AddPolicy("private", policy => policy.RequireRole("role_admin"));
+    options.AddPolicy("public", policy => policy.RequireRole("role_user"));
 });
 
 // Added JWT Authentication using the provided secret key
