@@ -3,9 +3,11 @@ using ComicChecklist.Application.UseCases.Commands;
 using ComicChecklist.Infra.Data;
 using ComicChecklist.Infra.Data.Repositories;
 using ComicChecklist.Presentation.Api.Endpoints;
+using ComicChecklist.Presentation.Api.Filters;
 using ComicChecklist.Presentation.Api.Secure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,7 @@ builder.Services.AddDbContext<ComicChecklistDbContext>(options =>
 builder.Services.AddTransient<IChecklistRepository, ChecklistRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IUserChecklistRepository, UserChecklistRepository>();
+builder.Services.AddTransient<IUserIssuesRepository, UserIssuesRepository>();
 
 // Add MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateChecklistCommand).Assembly));
@@ -52,6 +55,8 @@ builder.Services.AddSwaggerGen(opt =>
             new string[]{}
         }
     });
+
+    opt.SchemaFilter<EnumSchemaFilter>();
 });
 
 builder.Services.AddAuthorization(options =>
@@ -63,6 +68,16 @@ builder.Services.AddAuthorization(options =>
 
 // Added JWT Authentication using the provided secret key
 builder.Services.AddJwtAuthentication(Settings.JwtSecretKey);
+
+// Add support for Enums in minimal api
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 var app = builder.Build();
 

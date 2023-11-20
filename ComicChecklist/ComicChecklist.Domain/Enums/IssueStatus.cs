@@ -2,6 +2,6 @@
 {
     public enum IssueStatus
     {
-        Pending, InProgress, Completed
+        Undefined, Pending, InProgress, Completed
     }
 }

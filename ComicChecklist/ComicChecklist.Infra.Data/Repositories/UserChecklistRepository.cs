@@ -26,8 +26,8 @@ namespace ComicChecklist.Infra.Data.Repositories
             await _dbContext.UserChecklists.AddAsync(userChecklist);
         }
 
-        public async Task<List<SubscriptionDto>> GetSubscriptionsByUserIdAsync(int userId)
-        {            
+        public async Task<List<SubscriptionSummaryDto>> GetSubscriptionsByUserIdAsync(int userId)
+        {
             var query = from userChecklist in _dbContext.UserChecklists
                         join checklist in _dbContext.Checklists on userChecklist.ChecklistId equals checklist.Id
                         join issue in _dbContext.Issues on checklist.Id equals issue.ChecklistId
@@ -37,7 +37,7 @@ namespace ComicChecklist.Infra.Data.Repositories
                         from uts in utss.DefaultIfEmpty()
                         where userChecklist.UserId == userId
                         group new { userChecklist, issue, uts } by new { ChecklistId = checklist.Id, ChecklistName = checklist.Name } into grouped
-                        select new SubscriptionDto
+                        select new SubscriptionSummaryDto
                         (
                             grouped.Key.ChecklistId,
                             grouped.Key.ChecklistName,
@@ -52,6 +52,33 @@ namespace ComicChecklist.Infra.Data.Repositories
         public async Task SaveChangesAsync()
         {
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsSubscribed(int userId, int checklistId)
+        {
+            var userChecklist = await _dbContext.UserChecklists.SingleOrDefaultAsync(x => x.UserId == userId && x.ChecklistId == checklistId);
+            return userChecklist != null;
+        }
+
+        public async Task<SubscriptionFullDto> GetSubscriptionByUserIdAsync(int userId, int checklistId)
+        {
+            var query = from userChecklist in _dbContext.UserChecklists
+                        join checklist in _dbContext.Checklists on userChecklist.ChecklistId equals checklist.Id
+                        join issue in _dbContext.Issues on checklist.Id equals issue.ChecklistId
+                        join userIssueStatus in _dbContext.UserIssuesStatuses
+                            on new { UserId = userChecklist.UserId, IssueId = issue.Id }
+                                equals new { UserId = userIssueStatus.UserId, IssueId = userIssueStatus.IssueId } into utss
+                        from uts in utss.DefaultIfEmpty()
+                        where userChecklist.UserId == userId && userChecklist.ChecklistId == checklistId
+                        group new { userChecklist, issue, uts } by new { ChecklistId = checklist.Id, ChecklistName = checklist.Name } into grouped
+                        select new SubscriptionFullDto
+                        (
+                            grouped.Key.ChecklistId,
+                            grouped.Key.ChecklistName,
+                            grouped.Select(g => new UserIssueDto(g.issue.Id, g.issue.Title, g.uts != null ? g.uts.Status : IssueStatus.Undefined)).ToArray()
+                        );
+
+            return await query.SingleOrDefaultAsync();
         }
     }
 }

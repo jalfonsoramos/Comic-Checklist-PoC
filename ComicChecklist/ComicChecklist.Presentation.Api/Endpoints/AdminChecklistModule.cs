@@ -52,7 +52,7 @@ namespace ComicChecklist.Presentation.Api.Endpoints
                 return Results.BadRequest("Checklist name is null or empty.");
             }
 
-            if (request.Issues == null || request.Issues.Count() == 0)
+            if (request.Issues == null || request.Issues.Length == 0)
             {
                 return Results.BadRequest("Checklist issues array is null or empty.");
             }
