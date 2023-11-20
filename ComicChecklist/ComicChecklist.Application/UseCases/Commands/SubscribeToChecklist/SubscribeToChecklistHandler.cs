@@ -8,11 +8,13 @@ namespace ComicChecklist.Application.UseCases.Commands
     {
         private readonly IChecklistRepository _checklistRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IUserChecklistRepository _userChecklistRepository;
 
-        public SubscribeToChecklistHandler(IChecklistRepository checklistRepository, IUserRepository userRepository)
+        public SubscribeToChecklistHandler(IChecklistRepository checklistRepository, IUserRepository userRepository, IUserChecklistRepository userChecklistRepository)
         {
             _checklistRepository = checklistRepository;
             _userRepository = userRepository;
+            _userChecklistRepository = userChecklistRepository;
         }
 
         public async Task<UseCaseResult> Handle(SubscribeToChecklistCommand request, CancellationToken cancellationToken)
@@ -26,9 +28,9 @@ namespace ComicChecklist.Application.UseCases.Commands
                 return UseCaseResult.CreateFailResult("The checklist is not available for subscription.");
             }
 
-            await _checklistRepository.SubscribeToChecklist(userId, request.ChecklistId);
+            await _userChecklistRepository.SubscribeToChecklistAsync(userId, request.ChecklistId);
 
-            await _checklistRepository.SaveChangesAsync();
+            await _userChecklistRepository.SaveChangesAsync();
 
             return UseCaseResult.CreateSuccessResult();
         }

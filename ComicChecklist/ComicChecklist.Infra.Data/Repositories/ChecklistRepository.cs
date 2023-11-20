@@ -47,16 +47,5 @@ namespace ComicChecklist.Infra.Data.Repositories
                                                  .ToListAsync();
             }
         }
-
-        public async Task SubscribeToChecklist(int userId, int checklistId)
-        {
-            var userChecklist = new UserChecklist
-            {
-                UserId = userId,
-                ChecklistId = checklistId
-            };
-
-            await DbContext.UserChecklists.AddAsync(userChecklist);
-        }
     }
 }

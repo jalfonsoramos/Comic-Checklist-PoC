@@ -19,22 +19,28 @@ namespace ComicChecklist.Presentation.Api.Endpoints
 
         private static RouteGroupBuilder MapChecklistApi(this RouteGroupBuilder group)
         {
-            group.MapGet("/", GetAvailableChecklists)
-                            .WithName("GetAvailableChecklists")
+            group.MapGet("/", GetChecklistsToSubscribe)
+                            .WithName("GetChecklistsToSubscribe")
                             .Produces<ChecklistDto[]>(StatusCodes.Status200OK, "app/json")
                             .Produces(StatusCodes.Status400BadRequest)
                             .Produces(StatusCodes.Status500InternalServerError);
 
-            group.MapPost("/{checklistId}/Subscriptions", SubscribeToChecklist)
+            group.MapPost("/{checklistId}/subscriptions", SubscribeToChecklist)
                 .WithName("SubscribeToChecklist")
                 .Produces<SubscriptionDto>(StatusCodes.Status200OK, "app/json")
+                .Produces(StatusCodes.Status400BadRequest)
+                .Produces(StatusCodes.Status500InternalServerError);
+
+            group.MapGet("/subscriptons", GetSubscription)
+                .WithName("GetSubscriptions")
+                .Produces<ChecklistDto[]>(StatusCodes.Status200OK, "app/json")
                 .Produces(StatusCodes.Status400BadRequest)
                 .Produces(StatusCodes.Status500InternalServerError);
 
             return group;
         }
 
-        private static async Task<IResult> GetAvailableChecklists(IMediator mediator, ClaimsPrincipal user)
+        private static async Task<IResult> GetChecklistsToSubscribe(IMediator mediator, ClaimsPrincipal user)
         {
             var checkists = await mediator.Send(new GetAvailableChecklistsQuery(user.Identity.Name));
             return Results.Ok(checkists);
@@ -44,6 +50,12 @@ namespace ComicChecklist.Presentation.Api.Endpoints
         {
             var result = await mediator.Send(new SubscribeToChecklistCommand(user.Identity.Name, checkListId));
             return result.IsSuccess ? Results.Ok() : Results.BadRequest(result.Errors);
+        }
+
+        private static async Task<IResult> GetSubscription(IMediator mediator, ClaimsPrincipal user)
+        {
+            var checklists = await mediator.Send(new GetSubscriptionsQuery(user.Identity.Name));
+            return Results.Ok(checklists);
         }
     }
 }

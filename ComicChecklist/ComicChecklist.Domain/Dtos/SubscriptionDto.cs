@@ -1,4 +1,4 @@
 ﻿namespace ComicChecklist.Domain.Dtos
 {
-    public record SubscriptionDto(int Id, int ChecklistId);
+    public record SubscriptionDto(int UserId, int ChecklistId, string ChecklistName);
 }
