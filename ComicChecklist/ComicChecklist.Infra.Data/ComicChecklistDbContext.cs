@@ -14,7 +14,7 @@ namespace ComicChecklist.Infra.Data
 
         public DbSet<UserChecklist> UserChecklists { get; set; }
 
-        public DbSet<UserIssueStatus> UserIssues { get; set; }
+        public DbSet<UserIssueStatus> UserIssuesStatuses { get; set; }
 
         public ComicChecklistDbContext(DbContextOptions<ComicChecklistDbContext> options) : base(options) { }
 

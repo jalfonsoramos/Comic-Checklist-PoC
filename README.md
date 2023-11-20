@@ -33,15 +33,23 @@
 
 Login Endpoints
 
-| endpoint                   | verb      | description                                             |
-| ---                        | ---       | ---                                                     |
-| /token                     | POST      | Get an access token as Admin or EndUser*                | 
+| endpoint | verb | description                              |
+| -------- | ---- | ---------------------------------------- |
+| /token   | POST | Get an access token as Admin or EndUser* |
 
-Checklist Endpoints
+Admin Endpoints
 
-| endpoint                   | verb      | description                                             |
-| ---                        | ---       | ---                                                     |
-| /admin/checklist           | POST      | As administrator create new checklist                   |
-| /admin/checklist/{id}      | PUT       | As administrator modify checklist                       |
-| /admin/checklist/{id}      | GET       | As administrator get single checklist                   |
-| /admin/checklist?name&page | GET       | As administrator get checklists                         |
+| endpoint                   | verb | description                  |
+| -------------------------- | ---- | ---------------------------- |
+| /admin/checklist           | POST | Create new checklist         |
+| /admin/checklist/{id}      | PUT  | Modify an existing checklist |
+| /admin/checklist/{id}      | GET  | As get a checklist by id     |
+| /admin/checklist?name&page | GET  | As search checklists by name |
+
+End user Endpoints
+
+| endpoint                               | verb | description                               |
+| -------------------------------------- | ---- | ----------------------------------------- |
+| /checklist                             | GET  | Get available checklists for subscription |
+| /checklist/{checklistId}/subscriptions | POST | Subscribe user to checklists              |
+| /checklist/subscriptions               | GET  | Get the checklists the user is subscribed |

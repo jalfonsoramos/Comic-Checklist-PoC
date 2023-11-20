@@ -1,4 +1,5 @@
-﻿using ComicChecklist.Domain.Models;
+﻿using ComicChecklist.Domain.Dtos;
+using ComicChecklist.Domain.Models;
 
 namespace ComicChecklist.Application.Interfaces.Repositories
 {
@@ -6,6 +7,6 @@ namespace ComicChecklist.Application.Interfaces.Repositories
     {
         Task SubscribeToChecklistAsync(int userId, int checklistId);
 
-        Task<List<UserChecklist>> GetSubscriptionsByUserIdAsync(int userId);
+        Task<List<SubscriptionDto>> GetSubscriptionsByUserIdAsync(int userId);
     }
 }

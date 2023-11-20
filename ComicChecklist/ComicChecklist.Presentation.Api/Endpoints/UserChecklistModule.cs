@@ -27,7 +27,7 @@ namespace ComicChecklist.Presentation.Api.Endpoints
 
             group.MapPost("/{checklistId}/subscriptions", SubscribeToChecklist)
                 .WithName("SubscribeToChecklist")
-                .Produces<SubscriptionDto>(StatusCodes.Status200OK, "app/json")
+                .Produces(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status400BadRequest)
                 .Produces(StatusCodes.Status500InternalServerError);
 

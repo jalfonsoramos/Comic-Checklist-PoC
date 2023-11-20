@@ -4,7 +4,7 @@ using MediatR;
 
 namespace ComicChecklist.Application.UseCases.Queries
 {
-    public class GetSubscriptionsHandler : IRequestHandler<GetSubscriptionsQuery, ChecklistDto[]>
+    public class GetSubscriptionsHandler : IRequestHandler<GetSubscriptionsQuery, SubscriptionDto[]>
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserChecklistRepository _userChecklistRepository;
@@ -15,16 +15,13 @@ namespace ComicChecklist.Application.UseCases.Queries
             _userChecklistRepository = userChecklistRepository;
         }
 
-        public async Task<ChecklistDto[]> Handle(GetSubscriptionsQuery request, CancellationToken cancellationToken)
+        public async Task<SubscriptionDto[]> Handle(GetSubscriptionsQuery request, CancellationToken cancellationToken)
         {
             var userId = await _userRepository.GetUserIdByNameAsync(request.UserName);
 
-            var userChecklists = await _userChecklistRepository.GetSubscriptionsByUserIdAsync(userId);
-
-            var checklists = userChecklists.Select(x => new ChecklistDto(x.Checklist.Id,
-                                                                            x.Checklist.Name,
-                                                                            Enumerable.Empty<IssueDto>().ToArray()));
-            return checklists.ToArray();
+            var subscriptions = await _userChecklistRepository.GetSubscriptionsByUserIdAsync(userId);
+           
+            return subscriptions.ToArray();
         }
     }
 }

@@ -3,5 +3,5 @@ using MediatR;
 
 namespace ComicChecklist.Application.UseCases.Queries
 {
-    public record GetSubscriptionsQuery(string UserName) : IRequest<ChecklistDto[]>;
+    public record GetSubscriptionsQuery(string UserName) : IRequest<SubscriptionDto[]>;
 }
