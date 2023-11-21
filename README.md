@@ -53,3 +53,12 @@ End user Endpoints
 | /checklist                             | GET  | Get available checklists for subscription |
 | /checklist/{checklistId}/subscriptions | POST | Subscribe user to checklists              |
 | /checklist/subscriptions               | GET  | Get the checklists the user is subscribed |
+
+
+### Notes.
+
+Use dev tunnels to communicate .net maui androd + .net mminimal api locally.
+
+Don't forget to set url from dev tunnel in the BaseAddress for the HttpClient in the .net maui.
+
+[Create and host a dev tunnel](https://learn.microsoft.com/en-us/azure/developer/dev-tunnels/get-started?tabs=windows)
