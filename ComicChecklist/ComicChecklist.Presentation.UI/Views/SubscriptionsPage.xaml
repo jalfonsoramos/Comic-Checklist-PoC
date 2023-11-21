@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ComicChecklist.Presentation.UI.Views.SubscriptionsPage"
+             Title="My Subscriptions">
+    <StackLayout Padding="5" Margin="5">
+        <!--<Label Text="My Subscriptions" FontSize="Title" HorizontalOptions="CenterAndExpand" Margin="0,20,0,10" />-->
+
+        <StackLayout Orientation="Horizontal" Spacing="10">
+            <Button Text="View Checklists" Command="{Binding ViewChecklistsCommand}" />
+            <Button Text="Refresh" Command="{Binding RefreshCommand}" />
+        </StackLayout>
+
+        <CollectionView ItemsSource="{Binding Subscriptions}" SelectionMode="Single" Margin="10">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="3">
+                        <Label Text="{Binding ChecklistName}" FontSize="Title" />
+                        <Label Text="{Binding Progress}" FontSize="Body" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>

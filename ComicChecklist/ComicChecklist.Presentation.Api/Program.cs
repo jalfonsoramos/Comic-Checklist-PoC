@@ -7,6 +7,7 @@ using ComicChecklist.Presentation.Api.Filters;
 using ComicChecklist.Presentation.Api.Secure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Net;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
