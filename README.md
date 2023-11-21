@@ -26,7 +26,7 @@
 - As an end-user I want to view the available checklists to subscribe
 - As an end-user I want to subscribe to an available checklist
 - As an end-user I want to view the checklists I'm subscribed and know the progress of the issues.
-- As an end-user I want to viwew a checklist and his issues I'm suscribed.
+- As an end-user I want to view a checklist and his issues I'm suscribed.
 - As an end-user I want to mark an issue as readed from a checklist I'm subscribed.
 
 ### Api Doc
@@ -55,7 +55,7 @@ End user Endpoints
 | /checklist/subscriptions               | GET  | Get the checklists the user is subscribed |
 
 
-### Notes.
+### Notes
 
 Use dev tunnels to communicate .net maui androd + .net minimal api locally.
 
