@@ -57,7 +57,7 @@ End user Endpoints
 
 ### Notes.
 
-Use dev tunnels to communicate .net maui androd + .net mminimal api locally.
+Use dev tunnels to communicate .net maui androd + .net minimal api locally.
 
 Don't forget to set url from dev tunnel in the BaseAddress for the HttpClient in the .net maui.
 
