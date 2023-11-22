@@ -1,33 +1,62 @@
 ﻿using System.Collections.ObjectModel;
 using ComicChecklist.Presentation.UI.Models;
 using ComicChecklist.Presentation.UI.Services;
+using ComicChecklist.Presentation.UI.Views;
+using CommunityToolkit.Mvvm.Input;
 
 namespace ComicChecklist.Presentation.UI.ViewModels
 {
-    public class ChecklistsViewModel : BindableObject
+    public partial class ChecklistsViewModel : BaseViewModel
     {
-        private ObservableCollection<ChecklistModel> _availableChecklists;
+        public ObservableCollection<ChecklistModel> AvailableChecklists { get; } = new();
+
         private readonly IChecklistApiService _checklistApiService;
 
         public ChecklistsViewModel(IChecklistApiService checklistApiService)
         {
+            Title = "Available checklists";
+
             _checklistApiService = checklistApiService;
+
+            GetAvailableChecklistsCommand.Execute(this);
         }
 
-        public ObservableCollection<ChecklistModel> AvailableChecklists
+        [RelayCommand]
+        async Task GetAvailableChecklistsAsync()
         {
-            get => _availableChecklists;
-            set
+            if (IsBusy) return;
+
+            try
             {
-                _availableChecklists = value;
-                OnPropertyChanged();
+                IsBusy = true;
+                var availableChecklists = await _checklistApiService.GetAvailableChecklists();
+
+                if (AvailableChecklists.Count != 0)
+                {
+                    AvailableChecklists.Clear();
+                }
+
+                foreach (var availableChecklist in availableChecklists)
+                {
+                    AvailableChecklists.Add(availableChecklist);
+                }
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error!", $"Unable to get available checklists {ex.Message}", "Ok");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
-        public async Task LoadData()
+        [RelayCommand]
+        async Task ViewChecklist(ChecklistModel availableChecklist)
         {
-            var availableChecklists = await _checklistApiService.GetAvailableChecklists();
-            AvailableChecklists = new ObservableCollection<ChecklistModel>(availableChecklists);
+            if (availableChecklist is null) return;
+
+            await Shell.Current.GoToAsync(nameof(ChecklistDetailPage), true, new Dictionary<string, object>() { { "Checklist", availableChecklist } });
         }
     }
 }

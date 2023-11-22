@@ -15,7 +15,7 @@ namespace ComicChecklist.Presentation.UI.Services
             _httpClient = httpClient;
         }
 
-        public async Task<IEnumerable<ChecklistModel>> GetAvailableChecklists()
+        public async Task<List<ChecklistModel>> GetAvailableChecklists()
         {
             _httpClient.SetAccessToken(token);
 

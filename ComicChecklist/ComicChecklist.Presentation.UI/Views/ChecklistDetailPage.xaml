@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"             
+             xmlns:model="clr-namespace:ComicChecklist.Presentation.UI.Models"
+             xmlns:viewmodel="clr-namespace:ComicChecklist.Presentation.UI.ViewModels"
+             x:DataType="viewmodel:ChecklistDetailsViewModel"                          
+             Title="{Binding Title}"            
+             x:Class="ComicChecklist.Presentation.UI.Views.ChecklistDetailPage">
+    <VerticalStackLayout>
+        <Label 
+            Text="{Binding Checklist.Name }"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <CollectionView ItemsSource="{Binding Checklist.Issues}" HorizontalOptions="CenterAndExpand" Margin="10">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:IssueModel">
+                    <StackLayout Padding="5" Spacing="10" Orientation="Vertical" >
+                        <Label Text="{Binding Title}" 
+                               FontSize="Body" 
+                               HorizontalOptions="Center" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>

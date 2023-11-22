@@ -6,6 +6,6 @@
 
         public string Name { get; set; }
 
-        public List<IssueModel> Issue { get; set; }
+        public List<IssueModel> Issues { get; set; }
     }
 }

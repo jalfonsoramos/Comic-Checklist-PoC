@@ -4,7 +4,7 @@ namespace ComicChecklist.Presentation.UI.Services
 {
     public interface IChecklistApiService
     {
-        Task<IEnumerable<ChecklistModel>> GetAvailableChecklists();
+        Task<List<ChecklistModel>> GetAvailableChecklists();
         Task<List<SubscriptionSummaryModel>> GetSubscriptionsAsync();
     }
 }

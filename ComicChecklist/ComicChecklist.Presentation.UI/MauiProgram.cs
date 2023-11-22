@@ -12,15 +12,19 @@ namespace ComicChecklist.Presentation.UI
             var builder = MauiApp.CreateBuilder();
          
             builder.Services.AddSingleton<SubscriptionsPage>();
-            builder.Services.AddSingleton<SubscriptionsViewModel>();
-            builder.Services.AddTransient<ChecklistsPage>();
-            builder.Services.AddTransient<ChecklistsViewModel>();
+            builder.Services.AddSingleton<ChecklistsPage>();
+            builder.Services.AddTransient<ChecklistDetailPage>();
 
-            builder.Services.AddScoped<IChecklistApiService, ChecklistApiService>();
+            builder.Services.AddSingleton<SubscriptionsViewModel>();            
+            builder.Services.AddSingleton<ChecklistsViewModel>();
+            builder.Services.AddTransient<ChecklistDetailsViewModel>();
+            
+            builder.Services.AddSingleton<IChecklistApiService, ChecklistApiService>();
 
             builder.Services.AddHttpClient<IChecklistApiService, ChecklistApiService>(client =>
             {
-                client.BaseAddress = new Uri("https://k7r64xn3-5056.usw3.devtunnels.ms/");
+                //client.BaseAddress = new Uri("https://k7r64xn3-5056.usw3.devtunnels.ms/");
+                client.BaseAddress = new Uri("https://localhost:7066/");
             });
 
             builder

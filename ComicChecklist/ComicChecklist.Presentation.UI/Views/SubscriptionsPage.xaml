@@ -4,14 +4,12 @@
              x:Class="ComicChecklist.Presentation.UI.Views.SubscriptionsPage"
              Title="My Subscriptions">
     <StackLayout Padding="5" Margin="5">
-        <!--<Label Text="My Subscriptions" FontSize="Title" HorizontalOptions="CenterAndExpand" Margin="0,20,0,10" />-->
-
-        <StackLayout Orientation="Horizontal" Spacing="10">
+        <StackLayout Orientation="Horizontal" Spacing="10" HorizontalOptions="CenterAndExpand">
             <Button Text="View Checklists" Command="{Binding ViewChecklistsCommand}" />
             <Button Text="Refresh" Command="{Binding RefreshCommand}" />
         </StackLayout>
 
-        <CollectionView ItemsSource="{Binding Subscriptions}" SelectionMode="Single" Margin="10">
+        <CollectionView ItemsSource="{Binding Subscriptions}" SelectionMode="Single" Margin="10" HorizontalOptions="CenterAndExpand">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <StackLayout Padding="3">
