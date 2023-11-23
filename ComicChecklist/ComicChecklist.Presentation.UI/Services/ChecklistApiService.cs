@@ -1,4 +1,5 @@
-﻿using ComicChecklist.Presentation.UI.Models;
+﻿using ComicChecklist.Presentation.UI.Enums;
+using ComicChecklist.Presentation.UI.Models;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 
@@ -26,6 +27,19 @@ namespace ComicChecklist.Presentation.UI.Services
             var checklists = JsonConvert.DeserializeObject<List<ChecklistModel>>(content);
 
             return checklists;
+        }
+
+        public async Task<SubscriptionFullModel> GetSubscriptionAsync(int checklistId)
+        {
+            return await Task.FromResult(new SubscriptionFullModel(checklistId, "fake issue", new List<UserIssueModel>
+            {
+                new UserIssueModel
+                {
+                    IssueId =1,
+                    IssueTitle = "issue1",
+                    IssueStatus= IssuesStatusOptions.Completed
+                },
+            }));
         }
 
         public async Task<List<SubscriptionSummaryModel>> GetSubscriptionsAsync()

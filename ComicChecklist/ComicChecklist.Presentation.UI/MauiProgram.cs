@@ -14,11 +14,13 @@ namespace ComicChecklist.Presentation.UI
             builder.Services.AddSingleton<SubscriptionsPage>();
             builder.Services.AddSingleton<ChecklistsPage>();
             builder.Services.AddSingleton<ChecklistDetailPage>();
+            builder.Services.AddSingleton<UpdateIssuesPage>();
 
             builder.Services.AddSingleton<SubscriptionsViewModel>();            
             builder.Services.AddSingleton<ChecklistsViewModel>();
             builder.Services.AddSingleton<ChecklistDetailsViewModel>();
-            
+            builder.Services.AddSingleton<UpdateIssuesViewModel>();
+
             builder.Services.AddSingleton<IChecklistApiService, ChecklistApiService>();
 
             builder.Services.AddHttpClient<IChecklistApiService, ChecklistApiService>(client =>

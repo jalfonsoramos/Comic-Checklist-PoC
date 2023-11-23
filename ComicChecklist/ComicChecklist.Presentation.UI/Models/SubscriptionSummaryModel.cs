@@ -1,7 +1,6 @@
 ﻿namespace ComicChecklist.Presentation.UI.Models
 {
     public class SubscriptionSummaryModel
-
     {
         public int ChecklistId { get; set; }
         public string ChecklistName { get; set; }

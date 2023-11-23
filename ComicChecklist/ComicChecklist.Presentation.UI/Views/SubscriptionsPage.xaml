@@ -17,10 +17,17 @@
                    IsVisible="{Binding ShowIsEmpty}">
             </Label>
         </StackLayout>
-        <CollectionView ItemsSource="{Binding Subscriptions}" SelectionMode="Single" Margin="10" HorizontalOptions="CenterAndExpand">
+        <CollectionView ItemsSource="{Binding Subscriptions}" 
+                        SelectionMode="None" 
+                        Margin="10" 
+                        HorizontalOptions="CenterAndExpand">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:SubscriptionSummaryModel">
                     <StackLayout Padding="3">
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:SubscriptionsViewModel}},Path=UpdateIssuesCommand}"
+                                                  CommandParameter="{Binding .}"/>
+                        </StackLayout.GestureRecognizers>
                         <Label Text="{Binding ChecklistName}" FontSize="Title" />
                         <Label Text="{Binding Progress}" FontSize="Body" />
                     </StackLayout>

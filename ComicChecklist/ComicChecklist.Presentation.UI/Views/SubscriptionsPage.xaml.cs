@@ -18,5 +18,5 @@ public partial class SubscriptionsPage : ContentPage
         {
             viewModel.GetSubscriptionsCommand.Execute(null);
         }
-    }
+    }    
 }

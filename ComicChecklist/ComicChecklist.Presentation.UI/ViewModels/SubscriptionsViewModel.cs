@@ -54,5 +54,14 @@ namespace ComicChecklist.Presentation.UI.ViewModels
         {
             await Shell.Current.GoToAsync(nameof(ChecklistsPage));
         }
+
+        [RelayCommand]
+        async Task UpdateIssuesAsync(SubscriptionSummaryModel subscription)
+        {
+            if (subscription is null) return;
+
+            await Shell.Current.GoToAsync(nameof(UpdateIssuesPage), true, new Dictionary<string, object>() { { "ChecklistId", subscription.ChecklistId } });
+
+        }
     }
 }
