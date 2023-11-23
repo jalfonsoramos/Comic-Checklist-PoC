@@ -4,9 +4,12 @@
              x:Class="ComicChecklist.Presentation.UI.MainPage">
 
     <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" MinimumWidthRequest="300">
-        <Label Text="Iniciar Sesión" HorizontalOptions="CenterAndExpand" FontSize="Title" Margin="0,20,0,20" />
-        <Entry Placeholder="Nombre de Usuario" x:Name="UsernameEntry" Margin="10" />
-        <Entry Placeholder="Contraseña" x:Name="PasswordEntry" IsPassword="True" Margin="10" />
-        <Button Text="Login" Clicked="Button_Clicked" HorizontalOptions="CenterAndExpand" Margin="10"></Button>
+        <Label Text="This is a fake login, for testing purposes there is an access token hardcoded in the app." HorizontalOptions="CenterAndExpand" FontSize="Title" Margin="0,20,0,20" />
+        <Label Text="Just press the login button to access the app." HorizontalOptions="CenterAndExpand" FontSize="Title" Margin="0,20,0,20" />
+        <StackLayout HorizontalOptions="CenterAndExpand">
+            <Entry Placeholder="User1" x:Name="UsernameEntry" Margin="10" IsReadOnly="True"  />
+            <Entry Placeholder="Password" x:Name="PasswordEntry" IsPassword="True" Margin="10" IsReadOnly="True" />
+            <Button Text="Login" Clicked="Button_Clicked" HorizontalOptions="CenterAndExpand" Margin="10"></Button>
+        </StackLayout>
     </StackLayout>
 </ContentPage>

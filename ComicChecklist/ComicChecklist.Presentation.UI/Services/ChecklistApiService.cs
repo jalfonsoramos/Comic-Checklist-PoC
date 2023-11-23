@@ -1,5 +1,4 @@
-﻿using ComicChecklist.Presentation.UI.Enums;
-using ComicChecklist.Presentation.UI.Models;
+﻿using ComicChecklist.Presentation.UI.Models;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
@@ -10,6 +9,7 @@ namespace ComicChecklist.Presentation.UI.Services
     {
         private readonly HttpClient _httpClient;
 
+        // TODO: Get a token and store in secrets in the login page. This hardcodedtoken is for test user User1.
         string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IlVzZXIxIiwicm9sZSI6InJvbGVfdXNlciIsIm5iZiI6MTcwMDUyMjQwMiwiZXhwIjoxNzAwNTIzMDAyLCJpYXQiOjE3MDA1MjI0MDJ9.ohbLb9hGqFHSNxNo1y-wy4lLPNvCyT24BimwrInG4Oo";
 
         public ChecklistApiService(HttpClient httpClient)
@@ -73,7 +73,7 @@ namespace ComicChecklist.Presentation.UI.Services
             var httpContent = new StringContent(payload, Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PutAsync($"/checklists/{checklistId}/subscriptions", httpContent);
-            
+
             response.EnsureSuccessStatusCode();
         }
     }

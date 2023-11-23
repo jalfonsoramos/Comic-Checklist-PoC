@@ -16,7 +16,7 @@ namespace ComicChecklist.Presentation.UI
             builder.Services.AddSingleton<ChecklistDetailPage>();
             builder.Services.AddSingleton<UpdateIssuesPage>();
 
-            builder.Services.AddSingleton<SubscriptionsViewModel>();            
+            builder.Services.AddSingleton<SubscriptionsViewModel>();
             builder.Services.AddSingleton<ChecklistsViewModel>();
             builder.Services.AddSingleton<ChecklistDetailsViewModel>();
             builder.Services.AddSingleton<UpdateIssuesViewModel>();
@@ -25,7 +25,11 @@ namespace ComicChecklist.Presentation.UI
 
             builder.Services.AddHttpClient<IChecklistApiService, ChecklistApiService>(client =>
             {
+                // HACK: In order to test the app in android or ios platforms is necessary to use dev tunnels.
+                // Uncoment the following line (and comment the next) and set a valid url from dev tunnels.
                 //client.BaseAddress = new Uri("https://k7r64xn3-5056.usw3.devtunnels.ms/");
+
+                // HACK: Use this line to test the app in windows platform.
                 client.BaseAddress = new Uri("https://localhost:7066/");
             });
 
@@ -38,7 +42,7 @@ namespace ComicChecklist.Presentation.UI
                 });
 
 #if DEBUG
-		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();
