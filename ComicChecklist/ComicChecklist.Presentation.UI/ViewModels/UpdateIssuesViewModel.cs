@@ -16,7 +16,7 @@ namespace ComicChecklist.Presentation.UI.ViewModels
         string checklistName;
 
         public ObservableCollection<UserIssueModel> Issues { get; } = new ObservableCollection<UserIssueModel>();
-      
+
         private readonly IChecklistApiService _checklistApiService;
 
         public UpdateIssuesViewModel(IChecklistApiService checklistApiService)
@@ -24,37 +24,56 @@ namespace ComicChecklist.Presentation.UI.ViewModels
             Title = "Update user issues";
 
             _checklistApiService = checklistApiService;
-
-            LoadSubscriptionCommand.Execute(this);
         }
 
         [RelayCommand]
         async Task LoadSubscription()
         {
-            SubscriptionFullModel subscription = await _checklistApiService.GetSubscriptionAsync(ChecklistId);
-
-            if (subscription == null)
+            try
             {
-                return;
+                var subscription = await _checklistApiService.GetSubscriptionAsync(ChecklistId);
+
+                if (subscription == null)
+                {
+                    return;
+                }
+
+                ChecklistName = subscription.ChecklistName;
+
+                if (Issues.Count > 0)
+                {
+                    Issues.Clear();
+                }
+
+                foreach (var issue in subscription.Issues)
+                {
+                    Issues.Add(issue);
+                }
             }
-
-            ChecklistName = subscription.ChecklistName;
-
-            if (Issues.Count > 0)
+            catch (Exception ex)
             {
-                Issues.Clear();
-            }
-
-            foreach (var issue in subscription.Issues)
-            {
-                Issues.Add(issue);
+                await Shell.Current.DisplayAlert("Error!", $"Unable to get subscription {ex.Message}", "Ok");
             }
         }
 
         [RelayCommand]
-        async Task UpdateIssueAsync(UserIssueModel issue)
+        async Task UpdateIssueAsync()
         {
-            await Task.CompletedTask;
+            try
+            {
+                // TODO: Update only if the issues with new status.
+
+                var issuesToUpdate = Issues.Select(x => new UserIssueUpdateModel(x.IssueId, x.IssueStatus)).ToList();
+
+                await _checklistApiService.UpdateUserIssue(ChecklistId, issuesToUpdate);
+
+                LoadSubscriptionCommand.Execute(this);
+
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error!", $"Unable to update issue {ex.Message}", "Ok");
+            }
         }
     }
 }

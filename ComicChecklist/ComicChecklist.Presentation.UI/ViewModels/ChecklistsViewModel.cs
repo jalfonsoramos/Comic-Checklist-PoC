@@ -18,9 +18,7 @@ namespace ComicChecklist.Presentation.UI.ViewModels
         {
             Title = "Available checklists";
 
-            _checklistApiService = checklistApiService;
-
-            GetAvailableChecklistsCommand.Execute(this);
+            _checklistApiService = checklistApiService;            
         }
 
         [RelayCommand]

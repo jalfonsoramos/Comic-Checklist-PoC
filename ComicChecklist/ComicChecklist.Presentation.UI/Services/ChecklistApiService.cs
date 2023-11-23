@@ -2,6 +2,7 @@
 using ComicChecklist.Presentation.UI.Models;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using System.Text;
 
 namespace ComicChecklist.Presentation.UI.Services
 {
@@ -31,15 +32,15 @@ namespace ComicChecklist.Presentation.UI.Services
 
         public async Task<SubscriptionFullModel> GetSubscriptionAsync(int checklistId)
         {
-            return await Task.FromResult(new SubscriptionFullModel(checklistId, "fake issue", new List<UserIssueModel>
-            {
-                new UserIssueModel
-                {
-                    IssueId =1,
-                    IssueTitle = "issue1",
-                    IssueStatus= IssuesStatusOptions.Completed
-                },
-            }));
+            _httpClient.SetAccessToken(token);
+
+            var response = await _httpClient.GetAsync($"/checklists/{checklistId}/subscriptions");
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+            var subscription = JsonConvert.DeserializeObject<SubscriptionFullModel>(content);
+
+            return subscription;
         }
 
         public async Task<List<SubscriptionSummaryModel>> GetSubscriptionsAsync()
@@ -60,6 +61,19 @@ namespace ComicChecklist.Presentation.UI.Services
             _httpClient.SetAccessToken(token);
 
             var response = await _httpClient.PostAsync($"/checklists/{checklistId}/subscriptions", null);
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task UpdateUserIssue(int checklistId, List<UserIssueUpdateModel> issuesToUpdate)
+        {
+            _httpClient.SetAccessToken(token);
+
+            var payload = JsonConvert.SerializeObject(issuesToUpdate);
+
+            var httpContent = new StringContent(payload, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync($"/checklists/{checklistId}/subscriptions", httpContent);
+            
             response.EnsureSuccessStatusCode();
         }
     }

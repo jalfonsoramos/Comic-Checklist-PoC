@@ -8,21 +8,20 @@
              Title="{Binding Title}"                          
              x:Class="ComicChecklist.Presentation.UI.Views.UpdateIssuesPage">
     <StackLayout HorizontalOptions="CenterAndExpand" MinimumWidthRequest="400" Padding="10">
-        <Label 
+        <StackLayout Orientation="Vertical">
+            <Label 
             Text="{Binding ChecklistName }"
             FontSize="Title"
             HorizontalOptions="CenterAndExpand"></Label>
-        <CollectionView ItemsSource="{Binding Issues}" 
-                        Margin="10">
+            <Button Text="Save" Command="{Binding UpdateIssueCommand}"></Button>
+        </StackLayout>
+        <CollectionView ItemsSource="{Binding Issues}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:UserIssueModel">
-                    <StackLayout Padding="5" Spacing="10" Orientation="Horizontal">
-                        <Label Text="{Binding IssueTitle}" FontSize="Subtitle" VerticalOptions="Center" />
+                    <StackLayout>
+                        <Label Text="{Binding IssueTitle}" FontSize="Subtitle" HorizontalOptions="CenterAndExpand" />
                         <Picker ItemsSource="{Binding Source={x:Static enum:IssuesStatusOptionsValues.Values}}" 
-                                SelectedItem="{Binding IssueStatus, Mode=TwoWay}"></Picker>
-                        <Button Text="Save" 
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:UpdateIssuesViewModel}},Path=UpdateIssueCommand}" 
-                                CommandParameter="{Binding .}"></Button>
+                                SelectedItem="{Binding IssueStatus, Mode=TwoWay}" HorizontalOptions="CenterAndExpand"></Picker>
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

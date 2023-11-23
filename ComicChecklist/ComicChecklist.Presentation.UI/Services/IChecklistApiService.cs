@@ -1,4 +1,5 @@
-﻿using ComicChecklist.Presentation.UI.Models;
+﻿using ComicChecklist.Presentation.UI.Enums;
+using ComicChecklist.Presentation.UI.Models;
 
 namespace ComicChecklist.Presentation.UI.Services
 {
@@ -8,5 +9,6 @@ namespace ComicChecklist.Presentation.UI.Services
         Task<SubscriptionFullModel> GetSubscriptionAsync(int checklistId);
         Task<List<SubscriptionSummaryModel>> GetSubscriptionsAsync();
         Task SubscribeToChecklist(int checklistId);
+        Task UpdateUserIssue(int checklistId, List<UserIssueUpdateModel> issuesToUpdate);
     }
 }

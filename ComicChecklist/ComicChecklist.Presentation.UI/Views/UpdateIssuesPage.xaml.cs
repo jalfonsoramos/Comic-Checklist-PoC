@@ -14,4 +14,14 @@ public partial class UpdateIssuesPage : ContentPage
     {
         base.OnNavigatedTo(args);
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (BindingContext is UpdateIssuesViewModel viewModel)
+        {
+            viewModel.LoadSubscriptionCommand.Execute(null);
+        }
+    }
 }
