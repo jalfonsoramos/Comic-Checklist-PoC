@@ -1,46 +1,56 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
 using ComicChecklist.Presentation.UI.Models;
 using ComicChecklist.Presentation.UI.Services;
 using ComicChecklist.Presentation.UI.Views;
+using CommunityToolkit.Mvvm.Input;
 
 namespace ComicChecklist.Presentation.UI.ViewModels
 {
-    public class SubscriptionsViewModel : BindableObject
+    public partial class SubscriptionsViewModel : BaseViewModel
     {
-        private ObservableCollection<SubscriptionSummaryModel> _subscriptions;
+        public ObservableCollection<SubscriptionSummaryModel> Subscriptions { get; } = new();
 
-        private ICommand _refreshCommand;
-        private ICommand _viewChecklistsCommand;
+        public bool ShowIsEmpty => !(Subscriptions.Count == 0);
 
         private readonly IChecklistApiService _checklistApiService;
 
         public SubscriptionsViewModel(IChecklistApiService checklistApiService)
         {
+            Title = "My Subscriptions";
+
             _checklistApiService = checklistApiService;
         }
 
-        public ObservableCollection<SubscriptionSummaryModel> Subscriptions
+        public SubscriptionsViewModel()
         {
-            get => _subscriptions;
-            set
+
+        }
+
+        [RelayCommand]
+        async Task GetSubscriptionsAsync()
+        {
+            try
             {
-                _subscriptions = value;
-                OnPropertyChanged();
+                var subscriptions = await _checklistApiService.GetSubscriptionsAsync();
+
+                if (Subscriptions.Count != 0)
+                {
+                    Subscriptions.Clear();
+                }
+
+                foreach (var subscription in subscriptions)
+                {
+                    Subscriptions.Add(subscription);
+                }
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error!", $"Unable to get subscriptions {ex.Message}", "Ok");
             }
         }
 
-        public ICommand RefreshCommand => _refreshCommand ??= new Command(async () => await LoadData());
-
-        public ICommand ViewChecklistsCommand => _viewChecklistsCommand ??= new Command(async () => await ViewChecklists());
-
-        public async Task LoadData()
-        {
-            var subscriptions = await _checklistApiService.GetSubscriptionsAsync();
-            Subscriptions = new ObservableCollection<SubscriptionSummaryModel>(subscriptions);
-        }
-
-        async Task ViewChecklists()
+        [RelayCommand]
+        async Task ViewChecklistsAsync()
         {
             await Shell.Current.GoToAsync(nameof(ChecklistsPage));
         }

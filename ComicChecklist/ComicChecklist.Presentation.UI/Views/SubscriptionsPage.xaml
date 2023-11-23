@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ComicChecklist.Presentation.UI.Views.SubscriptionsPage"
-             Title="My Subscriptions">
-    <StackLayout Padding="5" Margin="5">
-        <StackLayout Orientation="Horizontal" Spacing="10" HorizontalOptions="CenterAndExpand">
+             xmlns:model="clr-namespace:ComicChecklist.Presentation.UI.Models"
+             xmlns:viewmodel="clr-namespace:ComicChecklist.Presentation.UI.ViewModels"
+             x:DataType="viewmodel:SubscriptionsViewModel"                          
+             Title="{Binding Title}"             
+             x:Class="ComicChecklist.Presentation.UI.Views.SubscriptionsPage">
+    <StackLayout HorizontalOptions="CenterAndExpand" MinimumWidthRequest="400">
+        <StackLayout Orientation="Vertical" Spacing="10" HorizontalOptions="CenterAndExpand">
             <Button Text="View Checklists" Command="{Binding ViewChecklistsCommand}" />
-            <Button Text="Refresh" Command="{Binding RefreshCommand}" />
+            <Button Text="Refresh" Command="{Binding GetSubscriptionsCommand}">
+            </Button>
+            <Label Text="No checklists found"
+                   HorizontalOptions="Center"
+                   FontSize="Title"
+                   IsVisible="{Binding ShowIsEmpty}">
+            </Label>
         </StackLayout>
-
         <CollectionView ItemsSource="{Binding Subscriptions}" SelectionMode="Single" Margin="10" HorizontalOptions="CenterAndExpand">
             <CollectionView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="model:SubscriptionSummaryModel">
                     <StackLayout Padding="3">
                         <Label Text="{Binding ChecklistName}" FontSize="Title" />
                         <Label Text="{Binding Progress}" FontSize="Body" />

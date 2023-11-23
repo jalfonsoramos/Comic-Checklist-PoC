@@ -6,21 +6,21 @@
              x:DataType="viewmodel:ChecklistDetailsViewModel"                          
              Title="{Binding Title}"            
              x:Class="ComicChecklist.Presentation.UI.Views.ChecklistDetailPage">
-    <VerticalStackLayout>
+    <StackLayout HorizontalOptions="CenterAndExpand" MinimumWidthRequest="400" Padding="10">
         <Label 
             Text="{Binding Checklist.Name }"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+            FontSize="Title"
+            HorizontalOptions="CenterAndExpand"></Label>
         <CollectionView ItemsSource="{Binding Checklist.Issues}" HorizontalOptions="CenterAndExpand" Margin="10">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:IssueModel">
                     <StackLayout Padding="5" Spacing="10" Orientation="Vertical" >
                         <Label Text="{Binding Title}" 
-                               FontSize="Body" 
+                               FontSize="Subtitle" 
                                HorizontalOptions="Center" />
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+    </StackLayout>
 </ContentPage>

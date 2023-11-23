@@ -10,14 +10,14 @@ namespace ComicChecklist.Presentation.UI
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
-         
+
             builder.Services.AddSingleton<SubscriptionsPage>();
             builder.Services.AddSingleton<ChecklistsPage>();
-            builder.Services.AddTransient<ChecklistDetailPage>();
+            builder.Services.AddSingleton<ChecklistDetailPage>();
 
             builder.Services.AddSingleton<SubscriptionsViewModel>();            
             builder.Services.AddSingleton<ChecklistsViewModel>();
-            builder.Services.AddTransient<ChecklistDetailsViewModel>();
+            builder.Services.AddSingleton<ChecklistDetailsViewModel>();
             
             builder.Services.AddSingleton<IChecklistApiService, ChecklistApiService>();
 

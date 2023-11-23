@@ -6,5 +6,6 @@ namespace ComicChecklist.Presentation.UI.Services
     {
         Task<List<ChecklistModel>> GetAvailableChecklists();
         Task<List<SubscriptionSummaryModel>> GetSubscriptionsAsync();
+        Task SubscribeToChecklist(int checklistId);
     }
 }

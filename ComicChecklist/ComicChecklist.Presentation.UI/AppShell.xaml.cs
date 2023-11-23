@@ -8,6 +8,7 @@ namespace ComicChecklist.Presentation.UI
         {
             InitializeComponent();
 
+            Routing.RegisterRoute(nameof(SubscriptionsPage), typeof(SubscriptionsPage));
             Routing.RegisterRoute(nameof(ChecklistsPage), typeof(ChecklistsPage));
             Routing.RegisterRoute(nameof(ChecklistDetailPage), typeof(ChecklistDetailPage));
         }

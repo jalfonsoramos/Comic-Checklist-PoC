@@ -31,7 +31,7 @@ namespace ComicChecklist.Presentation.Api.Endpoints
                 .Produces(StatusCodes.Status400BadRequest)
                 .Produces(StatusCodes.Status500InternalServerError);
 
-            group.MapGet("/subscriptons", GetSubscriptions)
+            group.MapGet("/subscriptions", GetSubscriptions)
                 .WithName("GetSubscriptions")
                 .Produces<ChecklistDto[]>(StatusCodes.Status200OK, "app/json")
                 .Produces(StatusCodes.Status400BadRequest)

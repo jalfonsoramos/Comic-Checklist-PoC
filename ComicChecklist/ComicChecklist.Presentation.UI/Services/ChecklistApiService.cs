@@ -32,13 +32,21 @@ namespace ComicChecklist.Presentation.UI.Services
         {
             _httpClient.SetAccessToken(token);
 
-            var response = await _httpClient.GetAsync("/checklists/subscriptons");
+            var response = await _httpClient.GetAsync("/checklists/subscriptions");
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
             var subscriptions = JsonConvert.DeserializeObject<List<SubscriptionSummaryModel>>(content);
 
             return subscriptions;
+        }
+
+        public async Task SubscribeToChecklist(int checklistId)
+        {
+            _httpClient.SetAccessToken(token);
+
+            var response = await _httpClient.PostAsync($"/checklists/{checklistId}/subscriptions", null);
+            response.EnsureSuccessStatusCode();
         }
     }
 

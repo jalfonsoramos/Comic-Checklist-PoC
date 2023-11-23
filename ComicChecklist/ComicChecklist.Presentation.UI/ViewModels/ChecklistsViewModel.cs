@@ -10,6 +10,8 @@ namespace ComicChecklist.Presentation.UI.ViewModels
     {
         public ObservableCollection<ChecklistModel> AvailableChecklists { get; } = new();
 
+        public bool ShowIsEmpty => !(AvailableChecklists.Count == 0);
+
         private readonly IChecklistApiService _checklistApiService;
 
         public ChecklistsViewModel(IChecklistApiService checklistApiService)
@@ -24,11 +26,8 @@ namespace ComicChecklist.Presentation.UI.ViewModels
         [RelayCommand]
         async Task GetAvailableChecklistsAsync()
         {
-            if (IsBusy) return;
-
             try
             {
-                IsBusy = true;
                 var availableChecklists = await _checklistApiService.GetAvailableChecklists();
 
                 if (AvailableChecklists.Count != 0)
@@ -45,18 +44,29 @@ namespace ComicChecklist.Presentation.UI.ViewModels
             {
                 await Shell.Current.DisplayAlert("Error!", $"Unable to get available checklists {ex.Message}", "Ok");
             }
-            finally
-            {
-                IsBusy = false;
-            }
         }
 
         [RelayCommand]
-        async Task ViewChecklist(ChecklistModel availableChecklist)
+        async Task ViewChecklistAsync(ChecklistModel availableChecklist)
         {
             if (availableChecklist is null) return;
 
             await Shell.Current.GoToAsync(nameof(ChecklistDetailPage), true, new Dictionary<string, object>() { { "Checklist", availableChecklist } });
+        }
+
+        [RelayCommand]
+        async Task SubscribeAsync(ChecklistModel availableChecklist)
+        {
+            try
+            {
+                await _checklistApiService.SubscribeToChecklist(availableChecklist.Id);
+
+                GetAvailableChecklistsCommand.Execute(this);
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error!", $"Unable to subscribe to checklist {ex.Message}", "Ok");
+            }
         }
     }
 }
