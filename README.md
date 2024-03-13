@@ -72,4 +72,4 @@ End user Endpoints
 
 Don't forget to set url from dev tunnel in the BaseAddress for the HttpClient in the .net maui.
 
-[Create and host a dev tunnel](https://learn.microsoft.com/en-us/azure/developer/dev-tunnels/get-started?tabs=windows)
+[How to create and host a dev tunnel](https://learn.microsoft.com/en-us/azure/developer/dev-tunnels/get-started?tabs=windows)
